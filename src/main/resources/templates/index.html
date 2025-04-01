@@ -1,0 +1,282 @@
+<title>Đồng hồ Thụy Sỹ, đồng hồ nam, đồng hồ nữ chính hãng cao cấp</title>
+<div th:include="/fragments/user/header"></div>
+<div th:include="/components/slide"></div>
+<div class="devices">
+    <div class="wrp">
+        <a href="javascript://" title="" class="titleHead" style="margin-top: 30px">Sản phẩm bán chạy </a>
+        <div class="tabs">
+            <ul class="tab-links">
+                <li class="active"><a href="#tab1" title="">ĐỒNG HỒ CHÍNH HÃNG</a></li>
+                <li><a href="#tab2" title="">KÍNH MẮT THỜI TRANG</a></li>
+                <li><a href="#tab3" title="">DÂY ĐỒNG HỒ</a></li>
+            </ul>
+            <div class="tabContent">
+                <div id="tab1" class="tab active">
+                    <div class="group slide"
+                         th:include="/components/devices/item" th:with="devices=${productsWatches}">
+                    </div>
+                </div>
+                <div id="tab2" class="tab">
+                    <div class="group slide"
+                         th:include="/components/devices/item" th:with="devices=${productsGlasses}">
+                    </div>
+                    <div class="btnXemthem dn">
+                        <a href="javascript://" title="xem them" class="xemthem" rel="nofollow">
+                            <span>Xem thêm <i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <a href="javascript://" title="Kính mắt" class="thugon">
+                            <span>Xem tất cả <i class="fa fa-angle-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+                <div id="tab3" class="tab">
+                    <div class="group slide"
+                         th:include="/components/devices/item" th:with="devices=${productsAccessoriesses}">
+                    </div>
+                    <div class="btnXemthem dn">
+                        <a href="javascript://" title="" class="xemthem" rel="nofollow">
+                            <span>Xem thêm <i class="fa fa-chevron-down"></i></span>
+                        </a>
+                        <a href="javascript://" title="Phu kien dong ho" class="thugon">
+                            <span>Xem tất cả <i class="fa fa-angle-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="countCate" class="dn dbmobile-l">
+    <div class="wrp">
+        <div class="group">
+            <a href="javascript://" title="Phu kien" class="item">
+                <span class="ttu"><b>DÂY ĐỒNG HỒ</b></span>
+                <span><b>178</b></span>
+            </a>
+            <a href="javascript://" title="Kinh mat thoi trang" class="item">
+                <span class="ttu "><b>KÍNH MẮT</b></span>
+                <span><b>2.020</b></span>
+            </a>
+            <a href="javascript://" title="Bút ký" class="item">
+                <span class="ttu">BÚT KÝ CAO CẤP</span>
+                <span><b>11</b></span>
+            </a>
+            <a href="javascript://" title="Hộp đồng hô" class="item">
+                <span class="ttu"><b>HỘP ĐỒNG HỒ</b></span>
+                <span><b>34</b></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="logoPartner">
+    <div class="wrp">
+        <div class="wImage">
+            <a href="javascript://" title="Philippe Auguste" class="image lazy">
+                <img data-src="/view/img/PA.jpg" alt="Philippe Auguste" class="lazy" src="/view/lazy.jpg">
+            </a>
+        </div>
+        <div class="wImage">
+            <a href="javascript://" title="Atlantic Swiss" class="image">
+                <img data-src="/view/img/Atlatic.jpg" alt="Atlantic Swiss" class="lazy" src="/view/lazy.jpg">
+            </a>
+        </div>
+        <div class="wImage">
+            <a href="javascript://" title="Diamond D" class="image">
+                <img data-src="/view/img/DiamondD.jpg" alt="Diamond D" class="lazy" src="/view/lazy.jpg">
+            </a>
+        </div>
+        <div class="wImage">
+            <a href="javascript://" title="Jacques Lemans" class="image">
+                <img data-src="/view/img/Jacques.jpg" alt="Jacques Lemans" class="lazy" src="/view/lazy.jpg">
+            </a>
+        </div>
+        <div class="wImage">
+            <a href="javascript://" title="Aries Gold" class="image">
+                <img data-src="/view/img/AriesGold.jpg" alt="Aries Gold" class="lazy" src="/view/lazy.jpg">
+            </a>
+        </div>
+        <div class="wImage">
+            <a href="javascript://" title="Epos Swiss" class="image">
+                <img data-src="/view/img/Epos.jpg" alt="Epos Swiss" class="lazy" src="/view/lazy.jpg">
+            </a>
+        </div>
+    </div>
+</div>
+<div class="devices">
+    <div class="wrp">
+        <h2 class="titleCate">
+            <a href="javascript://" title="Philippe August">
+                    <span class="icon"><img data-src="/view/img/icon1.png" alt="Philippe August" class="lazy"
+                                            src="/view/lazy.jpg"/></span>
+                PHILIPPE AUGUSTE
+            </a>
+        </h2>
+        <div class="group slide"
+             th:include="/components/devices/item" th:with="devices=${listDevices1}">
+        </div>
+    </div>
+</div>
+<div class="devices pb20">
+    <div class="wrp">
+        <h2 class="titleCate">
+            <a href="javascript://" title="Diamond D">
+                    <span class="icon">
+                        <img data-src="/view/img/icon1.png" alt="Diamond D" class="lazy"
+                                            src="/view/lazy.jpg"/>
+                    </span>Đồng hồ Diamond D
+            </a>
+        </h2>
+        <div class="group slide"
+             th:include="/components/devices/item" th:with="devices=${listDevices2}">
+        </div>
+    </div>
+</div>
+
+<div class="devices product3">
+    <div class="wrp">
+        <div class="bannerMain">
+            <div class="wImage dnTablet-l">
+                <a href="javascript://" title="EPos Swiss" class="image cover">
+                    <img data-src="/view/img/EP246.jpg" class="lazy" src="/view/lazy.jpg"/>
+                </a>
+            </div>
+            <div class="wImage dn dbtablet-l">
+                <a href="javascript://" title="Epos" class="image cover">
+                    <img data-src="/view/img/EP246M.jpg" class="lazy" src="/view/lazy.jpg"/>
+                </a>
+            </div>
+            <h2 class="info">
+                <a href="javascript://" title="Epos Swiss" class="name">
+                    <span>Đồng hồ Thụy Sỹ</span> <span class="dn dbtablet-l"> </span>
+                    <span>Epos Swiss</span>
+                </a>
+                <a href="javascript://" title="Epos Swiss" class="viewAll">Xem tất cả <i
+                        class="fa fa-chevron-right"></i></a>
+            </h2>
+        </div>
+        <div class="group slide3"
+             th:include="/components/devices/item" th:with="devices=${listDevices3}">
+        </div>
+    </div>
+</div>
+<div class="devices pt10">
+    <div class="wrp">
+        <h2 class="titleCate">
+            <a href="javascript://" title="jacques lemans">
+                <span class="icon"><img data-src="/view/img/icon1.png" class="lazy" src="/view/lazy.jpg"/></span>
+                JACQUES LEMANS
+            </a>
+        </h2>
+        <div class="group slide"
+             th:include="/components/devices/item" th:with="devices=${listDevices4}">
+        </div>
+    </div>
+</div>
+<div class="devices pb20">
+    <div class="wrp">
+        <h2 class="titleCate">
+            <a href="javascript://" title="Aries Gold" class="">
+                <span class="icon"><img data-src="/view/img/icon1.png" alt="AG" class="lazy" src="/view/lazy.jpg"/></span>
+                ĐỒNG HỒ ARIES GOLD
+            </a>
+        </h2>
+        <div class="group slide"
+             th:include="/components/devices/item" th:with="devices=${listDevices5}">
+        </div>
+    </div>
+</div>
+
+<div id="serviceSup">
+    <div class="wrp">
+        <div class="group">
+            <div class="item">
+                <div class="flex">
+                    <div class="img">
+                        <img data-src="/view/img/sup1.png" alt="Ship" class="lazy" src="/view/lazy.jpg"/>
+                    </div>
+                    <div class="text">
+                        <p class="ttu fRobotoB">GIAO HÀNG MIỄN PHÍ</p>
+                        <p>Thanh toán (COD) tại nhà</p>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="flex">
+                    <div class="img">
+                        <img data-src="/view/img/sup2.png" alt="Doi san pham" class="lazy" src="/view/lazy.jpg"/>
+                    </div>
+                    <div class="text">
+                        <p class="ttu fRobotoB">30 NGÀY ĐỔI SẢN PHẨM</p>
+                        <p>Miễn phí</p>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="flex">
+                    <div class="img">
+                        <img data-src="/view/img/sup3.png" alt="Bao hanh" class="lazy" src="/view/lazy.jpg"/>
+                    </div>
+                    <div class="text">
+                        <p class="ttu fRobotoB">BẢO HÀNH QUỐC TẾ</p>
+                        <p>Thay pin miễn phí</p>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="flex">
+                    <div class="img">
+                        <img data-src="/view/img/sup4.png" alt="Hoa don do" class="lazy" src="/view/lazy.jpg"/>
+                    </div>
+                    <div class="text">
+                        <p class="ttu fRobotoB">CHÍNH HÃNG 100%</p>
+                        <p>Xuất hóa đơn đỏ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="SupInfo">
+    <div class="wrp">
+        <div class="left">
+            <div class="item">
+                <p class="head">Hotline</p>
+                <a href="tel:18006005" title="Hotline" class="tel">
+                    <span class="icon"><i class="fa fa-phone"></i></span>
+                    <span class="text">1800.6005</span>
+                </a>
+            </div>
+            <div class="item">
+                <p class="head">Gọi đặt hàng</p>
+                <a href="tel:0985681189" title="Hotline" class="tel">
+                    <span class="icon"><i class="fa fa-phone"></i></span>
+                    <span class="text">098.568.1189</span>
+                </a>
+            </div>
+        </div>
+        <div class="right">
+            <div class="mail">
+                <p class="fs17 ttu mb10">Đăng ký nhận thông tin mới</p>
+                <div id="frmMail">
+                    <input type="text" value="" placeholder="Nhập email của bạn tại đây"/>
+                    <a href="javascript://" title="" class="btnRegis">Đăng ký</a>
+                </div>
+            </div>
+            <div class="social">
+                <p class="fs17 ttu mb10">Kết nối mạng xã hội</p>
+                <ul>
+                    <li><a rel="nofollow" href="javascript:" title="facebook" target="_blank"><i
+                            class="fa fa-facebook"></i></a></li>
+                    <li><a rel="nofollow" href="javascript:" title="Instagram" target="_blank"><i
+                            class="fa fa-instagram"></i></a></li>
+                    <li><a rel="nofollow" href="javascript:" title="youtube" target="_blank"><i
+                            class="fa fa-youtube"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="/fragments/user/footer"></div>

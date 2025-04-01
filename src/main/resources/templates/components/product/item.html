@@ -1,0 +1,29 @@
+<div class="item" th:each="devices: ${devices}">
+    <div class="wImage">
+        <a th:href="@{/devices/{slug}(slug=${devices.pro_slug})}" class="image">
+            <img th:src="${devices.pro_avatar}" th:alt="${devices.pro_name}" class="lazy"/>
+        </a>
+    </div>
+    <div class="info">
+        <p>34mm | 10ATM</p>
+        <a th:href="@{/devices/{slug}(slug=${devices.pro_slug})}" class="name">
+            <h3>[[${devices.pro_name}]]</h3>
+        </a>
+        <div style="display:flex">
+            <img style="width:15.96px;height:15.96px"
+                 src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                 th:each="i : ${#numbers.sequence(1, devices.star)}">
+            <img style="width:15.96px;height:15.96px"
+                 src="//laz-img-cdn.alicdn.com/tfs/TB18ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                 th:each="i : ${#numbers.sequence(devices.star + 1, 5)}" th:if="${devices.star < 5}">
+        </div>
+        <div class="price">
+            <p class="new">[[${@commonConfigurations.formatPrice(devices.pro_price, devices.pro_sale, 0)}]]đ</p>
+            <p class="old" th:if="${devices.pro_sale}">[[${@commonConfigurations.formatPrice(devices.pro_price, 0, 0)}]]đ</p>
+        </div>
+        <div class="count">
+            <div class="bg" style="width: 70%"></div>
+            <span class="text">Còn lại [[${devices.pro_amount}]]</span>
+        </div>
+    </div>
+</div>
