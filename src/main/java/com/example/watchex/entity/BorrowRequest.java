@@ -22,7 +22,7 @@ public class BorrowRequest {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="devices_id", nullable=false)
+    @JoinColumn(name = "devices_id", nullable = false)
     private Devices devices;
 
     @Column(name = "request_date", nullable = false)
@@ -30,7 +30,7 @@ public class BorrowRequest {
 
     private String reason;
 
-    private Integer status;
+    private String status;
 
     @Column(name = "due_date", nullable = false)
     private Date dueDate;

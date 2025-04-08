@@ -12,9 +12,6 @@ public class CategoryDto {
     private Integer id;
 
     @NotEmpty(message = "Thiếu tên danh mục")
-    private String c_name;
-
-    @NotEmpty(message = "Thiếu danh mục cha")
-    private String c_cate;
+    private String name;
 
 }

@@ -1,0 +1,54 @@
+<div th:include="/fragments/layout"></div>
+<div class="wrapper">
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/sidebar :: aside"></div>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                [[#{category}]]
+                <small><a th:href="@{'/category/create'}" class="btn btn-primary">Thêm mới</a></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{'/category'}" ><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li class="active"> [[#{category}]]</li>
+            </ol>
+            <!-- <div th:if="${message}" class="alert alert-success text-center mt-3">[[${message}]]</div> -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="col-md-12">
+            <table class="table text-center">
+                <thead>
+                <tr>
+                    <td>#</td>
+                    <td>[[#{name}]]</td>
+                    <td>Action</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${categories.isEmpty()}">
+                    <th colspan="4">[[#{no_result_found}]]</th>
+                </tr>
+                <tr th:each="category : ${categories}">
+                    <td>[[${((currentPage - 1) * 10) + categoryStat.index + 1}]]</td>
+                    <td>[[${category.name}]]</td>
+                    <td>
+                        <a th:href="@{'/category/edit/' + ${category.id}}" class="btn btn-secondary"><i class="fa fa-edit"></i> [[#{edit}]]</a>
+                        <a th:href="@{'/category/delete/' + ${category.id}}" class="btn btn-secondary"><i class="fa fa-trash text-danger"></i> [[#{delete}]]</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="box-footer" th:include="/fragments/pagination">
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+</div>
+<!-- /.content-wrapper -->
+
+<div th:include="/fragments/footer"></div>

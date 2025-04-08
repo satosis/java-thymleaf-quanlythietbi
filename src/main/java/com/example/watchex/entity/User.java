@@ -37,13 +37,10 @@ public class User implements UserDetails {
     private String provider_id;
 
     private String phone;
-    private String address;
     private String password;
-    private String birthday;
-    private Integer gender;
-    private Integer student_id;
-    private Integer role_id;
-    private Integer status;
+    private String student_id;
+    private String role;
+    private String status;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -81,7 +78,6 @@ public class User implements UserDetails {
         return null;
     }
 
-    @Override
     public String getUsername() {
         return null;
     }

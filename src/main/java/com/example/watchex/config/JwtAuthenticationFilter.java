@@ -2,8 +2,6 @@ package com.example.watchex.config;
 
 import com.example.watchex.entity.User;
 import com.example.watchex.repository.TokenRepository;
-import com.example.watchex.service.AdminJwtService;
-import com.example.watchex.service.AdminService;
 import com.example.watchex.service.JwtService;
 import com.example.watchex.service.UserService;
 import com.example.watchex.utils.CommonUtils;
@@ -28,9 +26,7 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final AdminJwtService adminJwtService;
     private final UserService userService;
-    private final AdminService adminService;
     private final TokenRepository tokenRepository;
 
     @Override
@@ -50,33 +46,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         final String authHeader = CommonUtils.getCookie(request, "Authorization");
-        final String adminAuthHeader = CommonUtils.getCookie(request, "AdminAuthorization");
         final String jwt;
         final String userEmail;
-        if (adminAuthHeader != null && adminAuthHeader.startsWith("Bearer+") && request.getServletPath().contains("/admin") ) {
-            jwt = adminAuthHeader.substring(7);
-            userEmail = jwtService.extractUsername(jwt);
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                var isTokenValid = tokenRepository.findByToken(jwt)
-                        .map(t -> !t.isExpired() && !t.isRevoked())
-                        .orElse(false);
-                boolean isAdmin = adminService.existsByEmail(userEmail);
-                if (isAdmin) {
-                    Admin admin = adminService.findByEmail(userEmail);
-                    if (adminJwtService.isTokenValid(jwt, admin) && isTokenValid) {
-                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                admin,
-                                null,
-                                admin.getAuthorities()
-                        );
-                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-                    }
-                }
-            }
-            filterChain.doFilter(request, response);
-            return;
-        }
+
         if (authHeader == null || !authHeader.startsWith("Bearer+")) {
             filterChain.doFilter(request, response);
             return;

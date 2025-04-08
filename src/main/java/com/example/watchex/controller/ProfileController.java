@@ -1,8 +1,8 @@
 package com.example.watchex.controller;
 
-import com.example.watchex.dto.EditProfileDto;
+import com.example.watchex.dto.UserDto;
 import com.example.watchex.entity.User;
-import com.example.watchex.service.CategoryService;
+import com.example.watchex.service.ContactService;
 import com.example.watchex.service.UserService;
 import com.example.watchex.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +27,20 @@ public class ProfileController {
     private UserService userService;
 
     @Autowired
-    private CategoryService categoryService;
+    private ContactService contactService;
 
     @GetMapping("")
     public String index(Model model) {
-        List<Category> categories = categoryService.getAll();
-        model.addAttribute("cartCount", Cart.cart.size());
-        model.addAttribute("categories", categories);
         return "user/profile";
     }
 
     @GetMapping("/edit")
     public String edit(Model model) {
-        List<Category> categories = categoryService.getAll();
-        model.addAttribute("cartCount", Cart.cart.size());
-        model.addAttribute("categories", categories);
         return "user/edit";
     }
 
     @PostMapping("/edit")
-    public String register(@Valid @ModelAttribute("editProfileDto") EditProfileDto editProfileDto, BindingResult result) throws Exception {
+    public String register(@Valid @ModelAttribute("editProfileDto") UserDto editProfileDto, BindingResult result) throws Exception {
         User user = CommonUtils.getCurrentUser();
         if (result.hasErrors()) {
             return "user/edit";
@@ -71,9 +65,6 @@ public class ProfileController {
         }
         user.setName(editProfileDto.getName());
         user.setPhone(editProfileDto.getPhone());
-        user.setGender(editProfileDto.getGender());
-        user.setBirthday(editProfileDto.getBirthday());
-        user.setAddress(editProfileDto.getAddress());
         userService.save(user);
 
         return "redirect:/profile";

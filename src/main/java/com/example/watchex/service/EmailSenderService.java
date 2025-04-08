@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
@@ -25,13 +26,15 @@ public class EmailSenderService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
-    public void sendEmail(String email, String subject,String template) throws MessagingException, IOException {
+    public void sendEmail(String email, String subject,String template, Model model) throws MessagingException, IOException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8.name());
 
         Context context = new Context();
+        context.setVariable("name", model.getAttribute("name"));
+        context.setVariable("email", model.getAttribute("email"));
         String html = templateEngine.process(template, context);
 
         helper.setTo(email);

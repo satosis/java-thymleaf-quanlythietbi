@@ -1,7 +1,7 @@
-<div th:include="/fragments/admin/layout"></div>
+<div th:include="/fragments/layout"></div>
 <div class="wrapper">
-    <div th:replace="/fragments/admin/header :: header"></div>
-    <div th:replace="/fragments/admin/sidebar :: aside"></div>
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/sidebar :: aside"></div>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
 
@@ -52,7 +52,7 @@
                             <td>[[${transaction.createdAt}]]</td>
                             <td>
                                 <a data-id="{{ $list->id }}" href="javascript:;"
-                                   th:data-href="@{/admin/transaction/detail/{id}(id=${transaction.id})}" class="btn-xs btn btn-primary js-preview-transaction
+                                   th:data-href="@{/transaction/detail/{id}(id=${transaction.id})}" class="btn-xs btn btn-primary js-preview-transaction
       "><i class="fa fa-eye"></i> View</a>
                                 <div class="btn-group"
                                      th:if="${transaction.tst_status != -1 && transaction.tst_status != 4}">
@@ -64,21 +64,21 @@
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
-                                            <a th:href="@{/admin/transaction/status/waiting_confirmation/{id}(id=${transaction.id})}">
+                                            <a th:href="@{/transaction/status/waiting_confirmation/{id}(id=${transaction.id})}">
                                                 <i class="fa fa-ban"></i>Chờ xác nhận</a></li>
                                         <li>
-                                            <a th:href="@{/admin/transaction/status/confirmed/{id}(id=${transaction.id})}">
+                                            <a th:href="@{/transaction/status/confirmed/{id}(id=${transaction.id})}">
                                                 <i class="fa fa-ban"></i>Đã xác nhận</a></li>
                                         <li>
-                                            <a th:href="@{/admin/transaction/status/process/{id}(id=${transaction.id})}">
+                                            <a th:href="@{/transaction/status/process/{id}(id=${transaction.id})}">
                                                 <i class="fa fa-ban"></i>Đang bàn giao</a></li>
                                         <li>
-                                            <a th:href="@{/admin/transaction/status/success/{id}(id=${transaction.id})}">
+                                            <a th:href="@{/transaction/status/success/{id}(id=${transaction.id})}">
                                                 <i class="fa fa-ban"></i>Đã giao hàng</a></li>
                                         <li>
-                                            <a th:href="@{/admin/transaction/status/confirm/{id}(id=${transaction.id})}">
+                                            <a th:href="@{/transaction/status/confirm/{id}(id=${transaction.id})}">
                                                 <i class="fa fa-ban"></i>Hoàn thành</a></li>
-                                        <li><a th:href="@{/admin/transaction/status/cancel/{id}(id=${transaction.id})}">
+                                        <li><a th:href="@{/transaction/status/cancel/{id}(id=${transaction.id})}">
                                             <i class="fa fa-ban"></i>Hủy</a></li>
                                     </ul>
                                 </div>
@@ -90,7 +90,7 @@
             </div>
         </section>
 
-        <div class="box-footer" th:include="/fragments/user/pagination"></div>
+        <div class="box-footer" th:include="/fragments/pagination"></div>
         <!-- /.content -->
     </div>
 
@@ -117,4 +117,4 @@
         <!-- /.modal-dialog -->
     </div>
 </div>
-<div th:include="/fragments/admin/footer"></div>
+<div th:include="/fragments/footer"></div>

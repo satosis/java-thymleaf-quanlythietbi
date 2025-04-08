@@ -2,7 +2,7 @@ package com.example.watchex.utils;
 
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.entity.User;
-import com.example.watchex.service.CategoryService;
+import com.example.watchex.service.ContactService;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class CommonUtils {
-    private static final CategoryService categoryService = new CategoryService();
+    private static final ContactService CONTACT_SERVICE = new ContactService();
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
     private static final Pattern IMAGE = Pattern.compile("[^\\w-.]");
 
@@ -415,15 +415,6 @@ public class CommonUtils {
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             return (User) authentication.getPrincipal();
-        }
-    }
-
-    public static Admin getCurrentAdmin() {
-        if (!isAuthenticated()) {
-            return null;
-        } else {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            return (Admin) authentication.getPrincipal();
         }
     }
 

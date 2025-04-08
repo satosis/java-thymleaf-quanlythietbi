@@ -19,6 +19,4 @@ public class AuthenticationResponse {
     private String refreshToken;
     @JsonProperty("user")
     private User user;
-    @JsonProperty("admin")
-    private Admin admin;
 }

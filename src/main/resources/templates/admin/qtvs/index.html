@@ -1,16 +1,16 @@
-<div th:include="/fragments/admin/layout"></div>
+<div th:include="/fragments/layout"></div>
 <div class="wrapper">
-    <div th:replace="/fragments/admin/header :: header"></div>
-    <div th:replace="/fragments/admin/sidebar :: aside"></div>
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/sidebar :: aside"></div>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
                 Quản trị viên
-                <small><a th:href="@{'/admin/qtv/create'}" class="btn btn-primary">Thêm mới</a></small>
+                <small><a th:href="@{'/qtv/create'}" class="btn btn-primary">Thêm mới</a></small>
             </h1>
             <ol class="breadcrumb">
-                <li><a th:href="@{'/admin/qtv'}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li><a th:href="@{'/qtv'}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
                 <li class="active"> Quản trị viên</li>
             </ol>
             <!-- <div th:if="${message}" class="alert alert-success text-center mt-3">[[${message}]]</div> -->
@@ -37,9 +37,9 @@
                         <td>[[${qtv.name}]]</td>
                         <td>[[${qtv.email}]]</td>
                         <td>
-                            <a th:href="@{'/admin/qtv/edit/' + ${qtv.id}}" class="btn btn-secondary"><i
+                            <a th:href="@{'/qtv/edit/' + ${qtv.id}}" class="btn btn-secondary"><i
                                     class="fa fa-edit"></i> [[#{edit}]]</a>
-                            <a th:href="@{'/admin/qtv/delete/' + ${qtv.id}}" class="btn btn-secondary" th:if="${@commonConfigurations.getCurrentAdmin.getId() != qtv.id}"><i
+                            <a th:href="@{'/qtv/delete/' + ${qtv.id}}" class="btn btn-secondary" ><i
                                     class="fa fa-trash text-danger"></i> [[#{delete}]]</a>
                         </td>
                     </tr>
@@ -47,11 +47,11 @@
                 </table>
 
             </div>
-            <div class="box-footer" th:include="/fragments/user/pagination">
+            <div class="box-footer" th:include="/fragments/pagination">
             </div>
         </section>
         <!-- /.content -->
     </div>
 </div>
 <!-- /.content-wrapper -->
-<div th:include="/fragments/admin/footer"></div>
+<div th:include="/fragments/footer"></div>

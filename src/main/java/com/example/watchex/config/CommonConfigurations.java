@@ -68,9 +68,6 @@ public class CommonConfigurations implements WebMvcConfigurer {
         return CommonUtils.getCurrentUser();
     }
 
-    public static Admin getCurrentAdmin() {
-        return CommonUtils.getCurrentAdmin();
-    }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         exposeDirectory("uploads", registry);

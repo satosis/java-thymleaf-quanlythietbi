@@ -7,36 +7,39 @@ import com.example.watchex.dto.RegisterDto;
 import com.example.watchex.entity.Token;
 import com.example.watchex.entity.User;
 import com.example.watchex.response.AuthenticationResponse;
-import com.example.watchex.service.*;
+import com.example.watchex.service.EmailSenderService;
+import com.example.watchex.service.JwtService;
+import com.example.watchex.service.TokenService;
+import com.example.watchex.service.UserService;
 import com.example.watchex.utils.CommonUtils;
 import com.example.watchex.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Objects;
 
 @Controller
-@RequestMapping("/user/")
+@RequestMapping("/")
 public class AuthController {
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private CategoryService categoryService;
+    private MessageSource messageSource;
 
     @Autowired
     private TokenService tokenService;
@@ -62,10 +65,7 @@ public class AuthController {
         if (CommonUtils.getCookie(request, "Authorization") != null) {
             return "redirect:/";
         }
-        List<Category> categories = categoryService.getAll();
-        model.addAttribute("categories", categories);
         model.addAttribute("loginDto", loginDto);
-        model.addAttribute("cartCount", Cart.cart.size());
 
         return "auth/login";
     }
@@ -73,12 +73,30 @@ public class AuthController {
     @PostMapping("auth/login")
     public String login(HttpServletRequest request,
                         @Valid @ModelAttribute("loginDto") LoginDto loginDto,
-                        BindingResult result)
+                        BindingResult result,
+                        Model model, RedirectAttributes ra)
             throws Exception {
         AuthenticationResponse jwt;
         User user = userService.findByEmail(loginDto.getEmail());
         if (user == null) {
             result.rejectValue("email", "error.email", "Tài khoản không tồn tại !");
+            return "auth/login";
+        }
+        if (Objects.equals(user.getRole(), "USER") && Objects.equals(user.getStatus(), "INACTIVE")) {
+            String subject = "Xác nhận đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản";
+            String template = "email/user-register-template";
+            model.addAttribute("name", user.getName());
+            model.addAttribute("email", user.getEmail());
+
+            emailService.sendEmail(user.getEmail(), subject, template, model);
+            ra.addFlashAttribute("message_success", "Kích hoạt tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản !");
+            return "auth/login";
+        }
+       if (Objects.equals(user.getStatus(), "SUSPENDED")) {
+            ra.addFlashAttribute("message", messageSource.getMessage("suspended_user_success", new Object[0], LocaleContextHolder.getLocale()));
+            return "auth/login";
+        } else if (Objects.equals(user.getStatus(), "BANNED")) {
+            ra.addFlashAttribute("message", messageSource.getMessage("banned_user_success", new Object[0], LocaleContextHolder.getLocale()));
             return "auth/login";
         }
         boolean checkPassword = new BCryptPasswordEncoder().matches(loginDto.getPassword(), user.getPassword());
@@ -130,14 +148,11 @@ public class AuthController {
         if (CommonUtils.getCookie(request, "Authorization") != null) {
             return "redirect:/";
         }
-        List<Category> categories = categoryService.getAll();
-        model.addAttribute("cartCount", Cart.cart.size());
-        model.addAttribute("categories",categories);
         return "auth/register";
     }
 
     @PostMapping("auth/register")
-    public String register(@Valid @ModelAttribute("registerDto") RegisterDto registerDto, BindingResult result) throws SQLException, IOException, MessagingException {
+    public String register(@Valid @ModelAttribute("registerDto") RegisterDto registerDto, BindingResult result, Model model, RedirectAttributes ra) throws SQLException, IOException, MessagingException {
         if (result.hasErrors()) {
             return "auth/register";
         }
@@ -155,7 +170,9 @@ public class AuthController {
         user.setEmail(registerDto.getEmail());
         user.setPhone(registerDto.getPhone());
         user.setPassword(registerDto.getPassword());
-        user.setGender(0);
+        user.setStudent_id(registerDto.getStudentId());
+        user.setRole("USER");
+        user.setStatus("INACTIVE");
         userService.save(user);
 
         Token token = new Token();
@@ -164,50 +181,37 @@ public class AuthController {
         token.setUser(user);
         tokenService.createToken(token);
         JwtResponse jwt = new JwtResponse(token.getToken(), user.getEmail());
-        String subject = "Xác nhận đăng ký thành công";
+        String subject = "Xác thực tài khoản";
         String template = "email/user-register-template";
-        emailService.sendEmail(registerDto.getEmail(), subject, template);
-        return "redirect:/user/auth/login";
+
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
+        emailService.sendEmail(registerDto.getEmail(), subject, template, model);
+        ra.addFlashAttribute("message_success", "Kích hoạt tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản !");
+
+        return "redirect:/auth/login";
     }
 
-//    @PostMapping("auth/register")
-//    public String register(@Valid RegisterDto registerDto, @RequestParam("image") MultipartFile file, BindingResult result) throws Exception {
-//        boolean checkSamePassword = registerDto.getPassword_confirm().equals(registerDto.getPassword());
-//        if (result.hasErrors()) {
-//            return "auth/register";
-//        }
-//        if (!checkSamePassword) {
-//            result.rejectValue("email", "error.password", "Mật khẩu xác nhận không chính xác !");
-//            return "auth/register";
-//        }
-//        if (userService.existsByEmail(registerDto.getEmail())) {
-//            result.rejectValue("email", "error.email", "Email đã được đăng ký !");
-//            return "auth/register";
-//        }
-//        byte[] bytes = file.getBytes();
-//        Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
-//        User user = new User();
-//        user.setName(registerDto.getName());
-//        user.setAvatar(blob);
-//        user.setEmail(registerDto.getEmail());
-//        user.setPhone(registerDto.getPhone());
-//        user.setPassword(registerDto.getPassword());
-//        userService.save(user);
-//
-//        Token token = new Token();
-//        token.setToken(jwtUtil.generateToken(user));
-//        token.setTokenExpDate(jwtUtil.generateExpirationDate());
-//        token.setUser(user);
-//        tokenService.createToken(token);
-//        JwtResponse jwt = new JwtResponse(token.getToken(), user.getEmail());
-//        String subject = "Đăng ký thành công";
-//        String template = "user-register-template";
-//        emailService.sendEmail(registerDto.getEmail(), subject, template);
-//        return "redirect:/auth/login";
-//    }
     @GetMapping("/auth/logout")
-    public String Logout(){
+    public String Logout() {
         CommonUtils.setCookie("Authorization", "");
         return "redirect:/";
+    }
+
+    @GetMapping("/auth/active/{email}")
+    public String active(@PathVariable("email") String email, RedirectAttributes ra) {
+        User user = userService.findByEmail(email);
+        if (Objects.equals(user.getStatus(), "ACTIVE")) {
+            ra.addFlashAttribute("message", messageSource.getMessage("user_actived", new Object[0], LocaleContextHolder.getLocale()));
+        } else if (Objects.equals(user.getStatus(), "SUSPENDED")) {
+            ra.addFlashAttribute("message", messageSource.getMessage("suspended_user_success", new Object[0], LocaleContextHolder.getLocale()));
+        } else if (Objects.equals(user.getStatus(), "BANNED")) {
+            ra.addFlashAttribute("message", messageSource.getMessage("banned_user_success", new Object[0], LocaleContextHolder.getLocale()));
+        } else {
+            ra.addFlashAttribute("message_success", messageSource.getMessage("active_user_success", new Object[0], LocaleContextHolder.getLocale()));
+            user.setStatus("ACTIVE");
+            userService.save(user);
+        }
+        return "redirect:/auth/login";
     }
 }

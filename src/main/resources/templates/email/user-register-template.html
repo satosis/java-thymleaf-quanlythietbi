@@ -1,45 +1,65 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Xác nhận đăng ký thành công</title>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
-
-    <!-- use the font -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            font-size: 48px;
+        .body {
+            width: 100%;
+            height: 100%;
+            background-color: #f3f3f3;
+            color: black
+        }
+
+        .p-15 {
+            padding: 15px;
+            background-color: #fff;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .button {
+            padding: 10px;
+            border: none;
+            background: #00b14f;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .img {
+            text-align: center;
+
+        }
+
+        .img img {
+            width: 100px;
+            height: 50px
         }
     </style>
 </head>
 <body>
-<p >234</p>
-
-<p>
-    Wow! You've got a long name (more than 5 chars)!
-</p>
-<p>
-    You have been successfully subscribed to the <b>Fake newsletter</b> on
-    <span >432</span>
-</p>
-
-<p>
-   Bài viết hướng dẫn: <a href="https://javabydeveloper.com/spring-boot-email-template/">Tại đây</a>
-</p>
-<p>
-
-    <a href="https://javabydeveloper.com">
-        <img src="http://javabydeveloper.com/wp-content/uploads/2019/12/javabydeveloper-email.png" alt="htts://javabydeveloper.com" height="110" width="500"/>
-    </a>
-</p>
-<p>
-    Regards, <br />
-    <em >432</em>
-<p>432</p>
-</p>
+<div class="body"><br>
+    <div class="img">
+        <img src="https://ssoftware.vn/uploads/data/5214/files/images/logo/logo_head.png" alt="logo">
+    </div>
+    <br>
+    <div class="p-15">
+        <p>Xin chào <b th:text="${name}"></b>,</p>
+        <p>Cảm ơn bạn đã đăng ký tài khoản. Để có được trải nghiệm dịch vụ và được hỗ trợ tốt nhất, bạn
+            cần hoàn thiện xác thực tài khoản.</p>
+        <p>Vui lòng bấm nút Xác thực để hoàn tất quá trình này.</p>
+        <div style="text-align:center">
+            <a th:href="@{'http://localhost:8081/auth/active/' + ${email}}" class="button"
+                                          style="color:white">Xác thực</a>
+                                        </div>
+        <p> Liên hệ với chúng tôi để được hỗ trợ nhiều hơn:</p>
+        <p> Hotline: <a href="tel:09123456789">09123456789</a></p>
+        <p>Email: <a href="mailto:support@gmail.com">support@gmail.com</a></p>
+        <b>Trân trọng,</b><br>
+        <b>Admin</b>
+    </div>
+    <br><br>
+</div>
 </body>
 </html>
