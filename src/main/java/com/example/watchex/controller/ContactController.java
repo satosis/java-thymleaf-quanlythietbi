@@ -58,7 +58,7 @@ public class ContactController {
         return "contact/create";
     }
 
-    @PostMapping("save")
+    @PostMapping("create")
     public String save(@Valid @ModelAttribute("contactDto") ContactDto contactDto,
                        BindingResult result, RedirectAttributes ra) {
         if (result.hasErrors()) {
@@ -76,15 +76,37 @@ public class ContactController {
         return "redirect:/contact";
     }
 
-    @PostMapping("update/{id}")
+    @GetMapping("edit/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, ContactDto contactDto) {
+        try {
+            Contact contact = contactService.show(id);
+            contactDto.setId(contact.getId());
+            contactDto.setEmail(contact.getEmail());
+            contactDto.setSubject(contact.getSubject());
+            contactDto.setMessage(contact.getMessage());
+            model.addAttribute("title", "Sửa liên hệ");
+            model.addAttribute("contactDto", contactDto);
+            return "contact/edit";
+        } catch (ClassNotFoundException exception) {
+            ra.addFlashAttribute("message", exception.getMessage());
+            return "redirect:/";
+        }
+    }
+
+    @PostMapping("edit/{id}")
     public String update(@PathVariable("id") Integer id,
+                         @Valid @ModelAttribute("contactDto") ContactDto contactDto,
                          BindingResult result,
                          RedirectAttributes ra) throws ClassNotFoundException {
         if (result.hasErrors()) {
             return "contact/edit";
         }
         Contact contact = contactService.show(id);
-        contact.setIs_reply(1);
+
+        contact.setUser(CommonUtils.getCurrentUser());
+        contact.setEmail(contactDto.getEmail());
+        contact.setSubject(contactDto.getSubject());
+        contact.setMessage(contactDto.getMessage());
 
         contactService.save(contact);
         ra.addFlashAttribute("message", messageSource.getMessage("update_contact_success", new Object[0], LocaleContextHolder.getLocale()));

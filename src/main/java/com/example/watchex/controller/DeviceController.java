@@ -1,8 +1,11 @@
 package com.example.watchex.controller;
 
 import com.example.watchex.dto.DeviceDto;
+import com.example.watchex.dto.StoreBorrowRequestDto;
+import com.example.watchex.entity.BorrowRequest;
 import com.example.watchex.entity.Category;
 import com.example.watchex.entity.Devices;
+import com.example.watchex.service.BorrowRequestService;
 import com.example.watchex.service.CategoryService;
 import com.example.watchex.service.DeviceService;
 import com.example.watchex.utils.CommonUtils;
@@ -17,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequestMapping("")
@@ -32,6 +32,8 @@ public class DeviceController {
     private DeviceService deviceService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private BorrowRequestService borrowRequestService;
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {
@@ -164,6 +166,44 @@ public class DeviceController {
         Devices devices = deviceService.show(id);
         devices.setAvailability_status(action);
         deviceService.save(devices);
+        return "redirect:/";
+    }
+
+    @GetMapping("devices/request/{id}")
+    public String request(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, DeviceDto deviceDto) {
+        try {
+            Devices devices = deviceService.show(id);
+            StoreBorrowRequestDto storeBorrowRequestDto = new StoreBorrowRequestDto();
+            model.addAttribute("title", "Gửi yêu cầu mượn sản phẩm " + devices.getName());
+            model.addAttribute("devices", devices);
+            model.addAttribute("storeBorrowRequestDto", storeBorrowRequestDto);
+            return "devices/request";
+        } catch (ClassNotFoundException exception) {
+            ra.addFlashAttribute("message", exception.getMessage());
+            return "redirect:/";
+        }
+    }
+
+    @PostMapping("devices/request/{id}")
+    public String request(@PathVariable("id") Integer id,
+                         @Valid @ModelAttribute("storeBorrowRequestDto") StoreBorrowRequestDto storeBorrowRequestDto,
+                         BindingResult result,
+                         RedirectAttributes ra, Model model) throws ClassNotFoundException {
+        Devices devices = deviceService.show(id);
+        model.addAttribute("devices", devices);
+        if (result.hasErrors()) {
+            return "devices/request";
+        }
+        BorrowRequest borrowRequest = new BorrowRequest();
+        borrowRequest.setDevices(devices);
+        borrowRequest.setUser(CommonUtils.getCurrentUser());
+        borrowRequest.setRequestDate(new Date());
+        borrowRequest.setReason(storeBorrowRequestDto.getReason());
+        borrowRequest.setStatus("PENDING");
+        borrowRequest.setDueDate(storeBorrowRequestDto.getDueDate());
+
+        borrowRequestService.save(borrowRequest);
+        ra.addFlashAttribute("message", messageSource.getMessage("borrow_device_success", new Object[0], LocaleContextHolder.getLocale()));
         return "redirect:/";
     }
 }

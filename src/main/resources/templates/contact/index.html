@@ -43,7 +43,7 @@
                         <span class="text-success">Đã trả lời</span>
                     </td>
                     <td th:if="${contact.is_reply == 0}">
-                        <a th:href="@{'/contact/reply/' + ${contact.id}}" class="btn btn-secondary">Chưa trả lời</a>
+                        <a th:href="@{'/contact/reply/' + ${contact.id}}" class="btn primary">Chưa trả lời</a>
                     </td>
                     <td>
                         <a th:href="@{'/contact/edit/' + ${contact.id}}" class="btn btn-secondary"><i class="fa fa-edit"></i> [[#{edit}]]</a>

@@ -21,7 +21,6 @@ public class DeviceDto {
     private String serial_number;
 
     private String description;
-    private String avatar;
 
     private String location;
 

@@ -1,0 +1,59 @@
+<div th:include="/fragments/layout"></div>
+<div th:include="/fragments/layout"></div>
+<div class="wrapper">
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/sidebar :: aside"></div>
+    <div class="content-wrapper">
+
+        <section class="content-header">
+            <!-- Content Header (Page header) -->
+            <h1>Gửi yêu cầu mượn thiết bị</h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{''}"> Trang chủ</a></li>
+                <li><a th:href="@{'/contact'}">Thiết bị</a></li>
+                <li><a href="#" class="active">Gửi yêu cầu mượn</a></li>
+            </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <form th:action="@{/devices/request/{id}(id=${devices.getId()})}" role="form" method="POST" enctype="multipart/form-data"
+                      th:object="${storeBorrowRequestDto}">
+                    <div class="col-md-12">
+                        <div class="box box-warning">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="name">Thiết bị</label>
+                                    <input type="text" class="form-control" name="email" id="name" disabled th:value="${devices.name}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Lý do</label>
+                                    <textarea name="reason" id="des" cols="5" rows="2" autocomplete="off" th:field="*{reason}" class="form-control"></textarea>
+                                    <p th:if="${#fields.hasErrors('reason')}" class="text-danger"
+                                    th:errors="*{reason}"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dueDate">Ngày dự kiến trả thiết bị</label>
+                                    <input type="date" name="dueDate" id="dueDate" th:field="*{dueDate}" required>
+                                    <p th:if="${#fields.hasErrors('dueDate')}" class="text-danger"
+                                       th:errors="*{dueDate}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12 clearfix">
+                        <div class="box-footer text-center">
+                            <a th:href="@{'/'}" class="btn btn-default"><i class="fa fa-arrow-left"></i>Quay lại</a>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Gửi yêu cầu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!-- /.content -->
+        <!-- /.content-wrapper -->
+    </div>
+
+</div>
+<div th:include="/fragments/footer"></div>

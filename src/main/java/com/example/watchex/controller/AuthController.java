@@ -89,7 +89,7 @@ public class AuthController {
             model.addAttribute("email", user.getEmail());
 
             emailService.sendEmail(user.getEmail(), subject, template, model);
-            ra.addFlashAttribute("message_success", "Kích hoạt tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản !");
+            ra.addFlashAttribute("message_success", "Xác thực tài khoản");
             return "auth/login";
         }
        if (Objects.equals(user.getStatus(), "SUSPENDED")) {
@@ -192,13 +192,13 @@ public class AuthController {
         return "redirect:/auth/login";
     }
 
-    @GetMapping("/auth/logout")
+    @GetMapping("auth/logout")
     public String Logout() {
         CommonUtils.setCookie("Authorization", "");
         return "redirect:/";
     }
 
-    @GetMapping("/auth/active/{email}")
+    @GetMapping("auth/active/{email}")
     public String active(@PathVariable("email") String email, RedirectAttributes ra) {
         User user = userService.findByEmail(email);
         if (Objects.equals(user.getStatus(), "ACTIVE")) {

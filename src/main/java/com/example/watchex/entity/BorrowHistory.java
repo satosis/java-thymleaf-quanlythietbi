@@ -31,10 +31,10 @@ public class BorrowHistory {
     @Column(name = "expected_return_date", nullable = false)
     private Date expectedReturnDate;
 
-    @Column(name = "actual_return_date", nullable = false)
+    @Column(name = "actual_return_date")
     private Date actualReturnDate;
 
-    @Column(name = "status_device", nullable = false)
+    @Column(name = "status_device")
     private Integer statusDevice;
 
     @CreationTimestamp
