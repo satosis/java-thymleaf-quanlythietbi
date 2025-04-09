@@ -83,4 +83,42 @@ public class BorrowRequestsController {
         borrowRequestService.save(borrowRequest);
         return "redirect:/borrow";
     }
+
+     @GetMapping("/return/{id}")
+    public String request(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, DeviceDto deviceDto) {
+        try {
+            BorrowRequest borrowRequest = borrowRequestService.show(id);
+            StoreBorrowRequestDto storeReturnRequestDto = new StoreBorrowRequestDto();
+            model.addAttribute("title", "Hoàn trả thiết bị " + borrowRequest.devices().getName());
+            model.addAttribute("borrowRequest", borrowRequest);
+            model.addAttribute("storeBorrowRequestDto", storeBorrowRequestDto);
+            return "devices/request";
+        } catch (ClassNotFoundException exception) {
+            ra.addFlashAttribute("message", exception.getMessage());
+            return "redirect:/";
+        }
+    }
+
+    @PostMapping("/return/{id}")
+    public String request(@PathVariable("id") Integer id,
+                         @Valid @ModelAttribute("storeBorrowRequestDto") StoreBorrowRequestDto storeBorrowRequestDto,
+                         BindingResult result,
+                         RedirectAttributes ra, Model model) throws ClassNotFoundException {
+        Devices devices = deviceService.show(id);
+        model.addAttribute("devices", devices);
+        if (result.hasErrors()) {
+            return "devices/request";
+        }
+        BorrowRequest borrowRequest = new BorrowRequest();
+        borrowRequest.setDevices(devices);
+        borrowRequest.setUser(CommonUtils.getCurrentUser());
+        borrowRequest.setRequestDate(new Date());
+        borrowRequest.setReason(storeBorrowRequestDto.getReason());
+        borrowRequest.setStatus("PENDING");
+        borrowRequest.setDueDate(storeBorrowRequestDto.getDueDate());
+
+        borrowRequestService.save(borrowRequest);
+        ra.addFlashAttribute("message", messageSource.getMessage("borrow_device_success", new Object[0], LocaleContextHolder.getLocale()));
+        return "redirect:/";
+    }
 }

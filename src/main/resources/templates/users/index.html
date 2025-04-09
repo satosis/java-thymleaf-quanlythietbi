@@ -42,8 +42,8 @@
                         <td th:if="${user.role == 'STAFF'}">Nhân viên</td>
                         <td th:if="${user.role == 'USER'}">User</td>
                         <td th:if="${user.status == 'ACTIVE'}">Hoạt động</td>
-                        <td th:if="${user.status == 'SUSPENDED'}">Tạm ngưng</td>
-                        <td th:if="${user.status == 'BANNED'}">Bị cấm</td>
+                        <td class="text-danger" th:if="${user.status == 'SUSPENDED'}">Tạm ngưng</td>
+                        <td class="text-danger" th:if="${user.status == 'BANNED'}">Bị cấm</td>
                         <td>[[${user.phone}]]</td>
                         <td>
                             <a th:href="@{'/user/edit/' + ${user.id}}">

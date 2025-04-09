@@ -46,7 +46,7 @@
                                 nhận</a>
                         </td>
                         <td th:if="${borrowRequest.status == 'APPROVED'}">
-                            <span class="text-success">Đã chấp nhận</span>
+                            <span class="text-success">Đã cho mượn</span>
                         </td>
                         <td th:if="${borrowRequest.status == 'REJECTED'}">
                             <span class="text-danger">Đã hủy yêu cầu</span>
@@ -54,6 +54,9 @@
                         <td>[[${borrowRequest.dueDate}]]</td>
                         <td th:if="${borrowRequest.status == 'PENDING'}">
                             <a class="text-danger" th:href="@{'/borrow/deny/' + ${borrowRequest.id}}"><i class="fa fa-edit"></i> Từ chối</a>
+                        </td>
+                        <td th:if="${borrowRequest.status == 'APPROVED'}">
+                            <a class="text-success" th:href="@{'/borrow/return/' + ${borrowRequest.id}}"><i class="fa fa-edit"></i> Hoàn trả thiết bị</a>
                         </td>
                     </tr>
                     </tbody>
