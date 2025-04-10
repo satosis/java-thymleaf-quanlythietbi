@@ -53,7 +53,7 @@ public class CategoryController {
         return "categories/create";
     }
 
-    @PostMapping("save")
+    @PostMapping("create")
     public String save(@Valid @ModelAttribute("categoryDto") CategoryDto categoryDto,
                        BindingResult result, RedirectAttributes ra) {
         if (result.hasErrors()) {
@@ -82,7 +82,7 @@ public class CategoryController {
         }
     }
 
-    @PostMapping("update/{id}")
+    @PostMapping("edit/{id}")
     public String update(@PathVariable("id") Integer id,
                          @Valid @ModelAttribute("categoryDto") CategoryDto categoryDto,
                          BindingResult result,

@@ -17,7 +17,7 @@
 
         <!-- Main content -->
         <section class="content">
-            <form th:action="@{/category/update/{id}(id=${id})}" method="POST" role="form" class="col-md-8"  th:object="${categoryDto}">
+            <form th:action="@{/category/edit/{id}(id=${id})}" method="POST" role="form" class="col-md-8"  th:object="${categoryDto}">
                 <div th:class="${#fields.hasErrors('name')} ? 'has-error form-group' : 'form-group'">
                     <label for="exampleInputEmail1">Danh mục</label>
                     <input type="text" class="form-control"  id="exampleInputEmail1" th:field="*{name}"
