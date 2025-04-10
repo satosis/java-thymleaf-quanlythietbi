@@ -47,7 +47,7 @@
                     <td>[[${device.operational_status}]]</td>
                     <td>[[${device.availability_status}]]</td>
                     <td>
-                        <a th:href="@{'/devices/request/' + ${device.id}}" class="btn btn-secondary" th:if="${device.availability_status == 'AVAILABLE'}"><i class="fa fa-edit"></i> Yều cầu mượn</a>
+                        <a th:href="@{'/devices/request/' + ${device.id}}" class="btn btn-secondary" th:if="${device.availability_status == 'AVAILABLE'}"><i class="fa fa-edit"></i> Yêu cầu mượn</a>
                         <a th:href="@{'/devices/edit/' + ${device.id}}" class="btn btn-secondary"><i class="fa fa-edit"></i> [[#{edit}]]</a>
                         <a th:href="@{'/devices/delete/' + ${device.id}}" class="btn btn-secondary"><i class="fa fa-trash text-danger"></i> [[#{delete}]]</a>
                     </td>

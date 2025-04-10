@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.NonNull;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -66,6 +65,12 @@ public class AuthController {
             return "redirect:/";
         }
         model.addAttribute("loginDto", loginDto);
+        String errorLogin = CommonUtils.getCookie(request, "error_login");
+        if (errorLogin != null) {
+            model.addAttribute("message",
+                    messageSource.getMessage(errorLogin, new Object[0], LocaleContextHolder.getLocale()));
+            CommonUtils.setCookie("error_login", "");
+        }
 
         return "auth/login";
     }
@@ -94,7 +99,7 @@ public class AuthController {
             ra.addFlashAttribute("message_success", "Xác thực tài khoản");
             return "auth/login";
         }
-       if (Objects.equals(user.getStatus(), "SUSPENDED")) {
+        if (Objects.equals(user.getStatus(), "SUSPENDED")) {
             ra.addFlashAttribute("message", messageSource.getMessage("suspended_user_success", new Object[0], LocaleContextHolder.getLocale()));
             return "auth/login";
         } else if (Objects.equals(user.getStatus(), "BANNED")) {

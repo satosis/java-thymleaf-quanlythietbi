@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +20,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
 
@@ -45,18 +43,18 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "/user/auth/**", "/bower_components/**", "/component/**", "/static/**", "/resources/**", "/favicon.ico", "/plugins/**",
-                 "/ckeditor/**",
-                 "/dist/**",
-                 "/js/**",
-                 "/plugins/**",
-                 "/tagsinput/**",
-                 "/toastr/**",
-                 "/uploads/**",
-                 "/vendor/**",
-                 "/video/**",
-                 "/view/**",
-                 "/product/**",
-                 "/auth/**"
+                        "/ckeditor/**",
+                        "/dist/**",
+                        "/js/**",
+                        "/plugins/**",
+                        "/tagsinput/**",
+                        "/toastr/**",
+                        "/uploads/**",
+                        "/vendor/**",
+                        "/video/**",
+                        "/view/**",
+                        "/product/**",
+                        "/auth/**"
                 )
                 .permitAll()
                 .anyRequest()
@@ -70,33 +68,41 @@ public class SecurityConfiguration {
                     String email = oauthUser.getAttribute("email");
                     String name = oauthUser.getAttribute("name");
                     String sub = oauthUser.getAttribute("sub");
-                    User user = userService.findByEmail(email);
-                    if (user == null) {
-                        User newuser = new User();
-                        newuser.setName(name);
-                        newuser.setEmail(email);
-                        newuser.setRole("USER");
-                        newuser.setProvider("google");
-                        newuser.setProvider_id("sub");
-                        newuser.setStatus("ACTIVE");
-                        userService.save(newuser);
-                        user = newuser;
-                    } else if (Objects.equals(user.getRole(), "USER") && Objects.equals(user.getStatus(), "INACTIVE")) {
-                        user.setProvider("google");
-                        user.setProvider_id("sub");
-                        user.setStatus("ACTIVE");
-                        userService.save(user);
-                    } else if (Objects.equals(user.getStatus(), "ACTIVE")) {
-                        user.setProvider("google");
-                        userService.save(user);
-                    }
-                    String jwtToken = jwtService.generateToken(user);
-                    String refreshToken = jwtService.generateRefreshToken(user);
-                    revokeAllUserTokens(user);
-                    saveUserToken(user, jwtToken);
-                    CommonUtils.setCookie("Authorization", "Bearer " + jwtToken);
-                    response.sendRedirect("/");
 
+                    assert email != null;
+                    if (!email.contains("@eaut.edu.vn")) {
+                        CommonUtils.setCookie("error_login", "error_login_google");
+                        response.sendRedirect("/auth/login");
+                    } else {
+
+                        User user = userService.findByEmail(email);
+                        if (user == null) {
+                            User newuser = new User();
+                            newuser.setName(name);
+                            newuser.setEmail(email);
+                            newuser.setRole("USER");
+                            newuser.setProvider("google");
+                            newuser.setProvider_id(sub);
+                            newuser.setStatus("ACTIVE");
+                            userService.save(newuser);
+                            user = newuser;
+                        } else if (Objects.equals(user.getRole(), "USER") && Objects.equals(user.getStatus(), "INACTIVE")) {
+                            user.setProvider("google");
+                            user.setProvider_id(sub);
+                            user.setStatus("ACTIVE");
+                            userService.save(user);
+                        } else if (Objects.equals(user.getStatus(), "ACTIVE")) {
+                            user.setProvider("google");
+                            user.setProvider_id(sub);
+                            userService.save(user);
+                        }
+                        String jwtToken = jwtService.generateToken(user);
+                        String refreshToken = jwtService.generateRefreshToken(user);
+                        revokeAllUserTokens(user);
+                        saveUserToken(user, jwtToken);
+                        CommonUtils.setCookie("Authorization", "Bearer " + jwtToken);
+                        response.sendRedirect("/");
+                    }
                 })
                 .and()
                 .sessionManagement()

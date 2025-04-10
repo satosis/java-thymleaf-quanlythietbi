@@ -7,6 +7,7 @@ import com.example.watchex.entity.MaintenanceRecords;
 import com.example.watchex.service.BorrowHistoryService;
 import com.example.watchex.service.BorrowRequestService;
 import com.example.watchex.service.DeviceService;
+import com.example.watchex.service.MaintenanceRecordsService;
 import com.example.watchex.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -33,6 +34,8 @@ public class BorrowRequestsController {
 
     @Autowired
     private BorrowHistoryService borrowHistoryService;
+    @Autowired
+    private MaintenanceRecordsService maintenanceRecordsService;
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {
@@ -89,6 +92,7 @@ public class BorrowRequestsController {
         BorrowRequest borrowRequest = borrowRequestService.show(id);
         BorrowHistory borrowHistory = borrowHistoryService.findByBorrowRequest(borrowRequest);
         Devices devices = borrowRequest.getDevices();
+        borrowRequest.setStatus("RETURNED");
         if (Objects.equals(params.get("status"), "GOOD")) {
             borrowHistory.setExpectedReturnDate(new Date());
             devices.setAvailability_status("AVAILABLE");
@@ -105,10 +109,11 @@ public class BorrowRequestsController {
             maintenanceRecords.setLoiThietBi(params.get("loi"));
             maintenanceRecords.setReportedUser(CommonUtils.getCurrentUser());
             maintenanceRecords.setMaintenance_status("PENDING");
+            maintenanceRecordsService.save(maintenanceRecords);
         }
         deviceService.save(devices);
         borrowHistoryService.save(borrowHistory);
-
+        borrowRequestService.save(borrowRequest);
         return "redirect:/borrow";
     }
 

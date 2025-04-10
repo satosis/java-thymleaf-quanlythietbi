@@ -51,6 +51,9 @@
                             <td th:if="${borrowRequest.status == 'REJECTED'}">
                                 <span class="text-danger">Đã hủy yêu cầu</span>
                             </td>
+                            <td th:if="${borrowRequest.status == 'RETURNED'}">
+                                <span class="text-danger">Đã hoàn trả</span>
+                            </td>
                             <td>[[${borrowRequest.dueDate}]]</td>
                             <td th:if="${borrowRequest.status == 'PENDING'}">
                                 <a class="text-danger" th:href="@{'/borrow/deny/' + ${borrowRequest.id}}"><i
