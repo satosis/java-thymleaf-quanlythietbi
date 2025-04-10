@@ -91,7 +91,7 @@ public class BorrowRequestsController {
         Devices devices = borrowRequest.getDevices();
         if (Objects.equals(params.get("status"), "GOOD")) {
             borrowHistory.setExpectedReturnDate(new Date());
-            devices.setAvailability_status("'AVAILABLE'");
+            devices.setAvailability_status("AVAILABLE");
         }
         if (Objects.equals(params.get("status"), "MINOR_DAMAGE") || Objects.equals(params.get("status"), "MAJOR_DAMAGE")) {
             borrowHistory.setStatusDevice(params.get("status"));
