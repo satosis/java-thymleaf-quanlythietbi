@@ -26,15 +26,12 @@ public class MaintenanceRecords {
     private User reportedUser;
 
     @ManyToOne
-    @JoinColumn(name = "maintenance_by", nullable = false)
+    @JoinColumn(name = "maintenance_by")
     private User maintenanceUser;
 
     private String loiThietBi;
 
-    private Integer maintenance_status;
-
-    @Column(name = "due_date", nullable = false)
-    private Date dueDate;
+    private String maintenance_status;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

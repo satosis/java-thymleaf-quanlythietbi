@@ -20,45 +20,85 @@
             <div class="col-md-12">
                 <table class="table text-center">
                     <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>[[#{username}]]</td>
-                        <td>[[#{devices}]]</td>
-                        <td>[[#{request_date}]]</td>
-                        <td>[[#{reason}]]</td>
-                        <td>[[#{status}]]</td>
-                        <td>[[#{due_date}]]</td>
-                        <td>Action</td>
-                    </tr>
+                        <tr>
+                            <td>#</td>
+                            <td>[[#{username}]]</td>
+                            <td>[[#{devices}]]</td>
+                            <td>[[#{request_date}]]</td>
+                            <td>[[#{reason}]]</td>
+                            <td>[[#{status}]]</td>
+                            <td>[[#{due_date}]]</td>
+                            <td>Action</td>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${borrowRequests.isEmpty()}">
-                        <th colspan="7">[[#{no_result_found}]]</th>
-                    </tr>
-                    <tr th:each="borrowRequest : ${borrowRequests}">
-                        <td>[[${((currentPage - 1) * 10) +borrowRequestStat.index + 1}]]</td>
-                        <td>[[${borrowRequest.user.name}]]</td>
-                        <td>[[${borrowRequest.devices.name}]]</td>
-                        <td>[[${borrowRequest.requestDate}]]</td>
-                        <td>[[${borrowRequest.reason}]]</td>
-                        <td th:if="${borrowRequest.status == 'PENDING'}">
-                            <a th:href="@{'/borrow/accept/' + ${borrowRequest.id}}" class="btn btn-primary">Chấp
-                                nhận</a>
-                        </td>
-                        <td th:if="${borrowRequest.status == 'APPROVED'}">
-                            <span class="text-success">Đã cho mượn</span>
-                        </td>
-                        <td th:if="${borrowRequest.status == 'REJECTED'}">
-                            <span class="text-danger">Đã hủy yêu cầu</span>
-                        </td>
-                        <td>[[${borrowRequest.dueDate}]]</td>
-                        <td th:if="${borrowRequest.status == 'PENDING'}">
-                            <a class="text-danger" th:href="@{'/borrow/deny/' + ${borrowRequest.id}}"><i class="fa fa-edit"></i> Từ chối</a>
-                        </td>
-                        <td th:if="${borrowRequest.status == 'APPROVED'}">
-                            <a class="text-success" th:href="@{'/borrow/return/' + ${borrowRequest.id}}"><i class="fa fa-edit"></i> Hoàn trả thiết bị</a>
-                        </td>
-                    </tr>
+                        <tr th:if="${borrowRequests.isEmpty()}">
+                            <th colspan="7">[[#{no_result_found}]]</th>
+                        </tr>
+                        <tr th:each="borrowRequest : ${borrowRequests}">
+                            <td>[[${((currentPage - 1) * 10) +borrowRequestStat.index + 1}]]</td>
+                            <td>[[${borrowRequest.user.name}]]</td>
+                            <td>[[${borrowRequest.devices.name}]]</td>
+                            <td>[[${borrowRequest.requestDate}]]</td>
+                            <td>[[${borrowRequest.reason}]]</td>
+                            <td th:if="${borrowRequest.status == 'PENDING'}">
+                                <a th:href="@{'/borrow/accept/' + ${borrowRequest.id}}" class="btn btn-primary">Chấp
+                                    nhận</a>
+                            </td>
+                            <td th:if="${borrowRequest.status == 'APPROVED'}">
+                                <span class="text-success">Đã cho mượn</span>
+                            </td>
+                            <td th:if="${borrowRequest.status == 'REJECTED'}">
+                                <span class="text-danger">Đã hủy yêu cầu</span>
+                            </td>
+                            <td>[[${borrowRequest.dueDate}]]</td>
+                            <td th:if="${borrowRequest.status == 'PENDING'}">
+                                <a class="text-danger" th:href="@{'/borrow/deny/' + ${borrowRequest.id}}"><i
+                                        class="fa fa-edit"></i> Từ chối</a>
+                            </td>
+                            <td th:if="${borrowRequest.status == 'APPROVED'}">
+                                <a class="text-success" href="javascript:;" data-toggle="modal"
+                                    data-target="#exampleModal"><i class="fa fa-edit"></i> Hoàn trả thiết bị</a>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Hoàn trả thiết bị</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label th:for="'status' + ${borrowRequest.id}">Trạng thái thiết
+                                                        bị</label>
+                                                    <select th:id="'status' + ${borrowRequest.id}" class="form-control">
+                                                        <option value="GOOD">Tốt</option>
+                                                        <option value="MINOR_DAMAGE">Hư hỏng nhỏ</option>
+                                                        <option value="MAJOR_DAMAGE">Hư hỏng nặng</option>
+                                                    </select>
+                                                    <div class="form-control">
+                                                        <label th:for="'loi' + ${borrowRequest.id}">Lỗi thiết bị (nếu
+                                                            có)</label>
+                                                        <textarea th:id="'loi' + ${borrowRequest.id}"
+                                                            class="form-control" rows="3"
+                                                            placeholder="Mô tả lỗi"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Đóng</button>
+                                                <button type="button" class="btn btn-primary save_return"
+                                                    th:data-id="${borrowRequest.id}">Lưu lại</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

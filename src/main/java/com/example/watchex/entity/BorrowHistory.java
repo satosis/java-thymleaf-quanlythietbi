@@ -25,6 +25,10 @@ public class BorrowHistory {
     @JoinColumn(name="devices_id", nullable=false)
     private Devices devices;
 
+    @ManyToOne
+    @JoinColumn(name="borrow_request_id", nullable=false)
+    private BorrowRequest borrowRequest;
+
     @Column(name = "borrow_date", nullable = false)
     private Date borrowDate;
 
@@ -35,7 +39,7 @@ public class BorrowHistory {
     private Date actualReturnDate;
 
     @Column(name = "status_device")
-    private Integer statusDevice;
+    private String statusDevice;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

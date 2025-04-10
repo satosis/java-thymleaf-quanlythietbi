@@ -76,3 +76,27 @@ $('.qty').click(function () {
       }
   })
 })
+
+$("body").on('click', '.save_return', function (event) {
+  var id = $(this).data("id");
+  var status = $("#status" + id).val();
+  var loi = $("#loi" + id).val();
+  console.log(status);
+  $.post({
+    url: '/borrow/return/' + id,
+    data: {
+      status: status,
+      loi: loi,
+    },
+    success: function (data) {
+      if (data.status == 200) {
+        toastr.success(data.message);
+        setTimeout(function () {
+          location.reload();
+        }, 2000);
+      } else {
+        toastr.error(data.message);
+      }
+    },
+  })
+})

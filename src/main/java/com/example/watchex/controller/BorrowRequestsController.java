@@ -1,8 +1,9 @@
-package com.example.watchex.controller.Admin;
+package com.example.watchex.controller;
 
 import com.example.watchex.entity.BorrowHistory;
 import com.example.watchex.entity.BorrowRequest;
 import com.example.watchex.entity.Devices;
+import com.example.watchex.entity.MaintenanceRecords;
 import com.example.watchex.service.BorrowHistoryService;
 import com.example.watchex.service.BorrowRequestService;
 import com.example.watchex.service.DeviceService;
@@ -12,13 +13,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/borrow")
@@ -64,6 +63,7 @@ public class BorrowRequestsController {
         devices.setAvailability_status("BORROWED");
 
         BorrowHistory borrowHistory = new BorrowHistory();
+        borrowHistory.setBorrowRequest(borrowRequest);
         borrowHistory.setBorrowDate(new Date());
         borrowHistory.setExpectedReturnDate(borrowRequest.getDueDate());
         borrowHistory.setDevices(devices);
@@ -84,41 +84,33 @@ public class BorrowRequestsController {
         return "redirect:/borrow";
     }
 
-     @GetMapping("/return/{id}")
-    public String request(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, DeviceDto deviceDto) {
-        try {
-            BorrowRequest borrowRequest = borrowRequestService.show(id);
-            StoreBorrowRequestDto storeReturnRequestDto = new StoreBorrowRequestDto();
-            model.addAttribute("title", "Hoàn trả thiết bị " + borrowRequest.devices().getName());
-            model.addAttribute("borrowRequest", borrowRequest);
-            model.addAttribute("storeBorrowRequestDto", storeBorrowRequestDto);
-            return "devices/request";
-        } catch (ClassNotFoundException exception) {
-            ra.addFlashAttribute("message", exception.getMessage());
-            return "redirect:/";
-        }
-    }
-
     @PostMapping("/return/{id}")
-    public String request(@PathVariable("id") Integer id,
-                         @Valid @ModelAttribute("storeBorrowRequestDto") StoreBorrowRequestDto storeBorrowRequestDto,
-                         BindingResult result,
-                         RedirectAttributes ra, Model model) throws ClassNotFoundException {
-        Devices devices = deviceService.show(id);
-        model.addAttribute("devices", devices);
-        if (result.hasErrors()) {
-            return "devices/request";
+    public String accept(@PathVariable("id") Integer id, @RequestParam Map<String, String> params) throws ClassNotFoundException {
+        BorrowRequest borrowRequest = borrowRequestService.show(id);
+        BorrowHistory borrowHistory = borrowHistoryService.findByBorrowRequest(borrowRequest);
+        Devices devices = borrowRequest.getDevices();
+        if (Objects.equals(params.get("status"), "GOOD")) {
+            borrowHistory.setExpectedReturnDate(new Date());
+            devices.setAvailability_status("'AVAILABLE'");
         }
-        BorrowRequest borrowRequest = new BorrowRequest();
-        borrowRequest.setDevices(devices);
-        borrowRequest.setUser(CommonUtils.getCurrentUser());
-        borrowRequest.setRequestDate(new Date());
-        borrowRequest.setReason(storeBorrowRequestDto.getReason());
-        borrowRequest.setStatus("PENDING");
-        borrowRequest.setDueDate(storeBorrowRequestDto.getDueDate());
+        if (Objects.equals(params.get("status"), "MINOR_DAMAGE") || Objects.equals(params.get("status"), "MAJOR_DAMAGE")) {
+            borrowHistory.setStatusDevice(params.get("status"));
+            borrowHistory.setExpectedReturnDate(new Date());
 
-        borrowRequestService.save(borrowRequest);
-        ra.addFlashAttribute("message", messageSource.getMessage("borrow_device_success", new Object[0], LocaleContextHolder.getLocale()));
-        return "redirect:/";
+            devices.setOperational_status("NEEDS_REPAIR");
+            devices.setAvailability_status("UNDER_MAINTENANCE");
+
+            MaintenanceRecords maintenanceRecords = new MaintenanceRecords();
+            maintenanceRecords.setDevices(devices);
+            maintenanceRecords.setLoiThietBi(params.get("loi"));
+            maintenanceRecords.setReportedUser(CommonUtils.getCurrentUser());
+            maintenanceRecords.setMaintenance_status("PENDING");
+        }
+        deviceService.save(devices);
+        borrowHistoryService.save(borrowHistory);
+
+        return "redirect:/borrow";
     }
+
+
 }
