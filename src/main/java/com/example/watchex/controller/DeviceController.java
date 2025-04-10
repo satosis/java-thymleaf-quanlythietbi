@@ -37,6 +37,9 @@ public class DeviceController {
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {
+        if (CommonUtils.getCurrentUser() == null) {
+            return "redirect:/auth/login";
+        }
         int page = 1;
         if (params.get("page") != null) {
             page = Integer.parseInt(params.get("page"));
