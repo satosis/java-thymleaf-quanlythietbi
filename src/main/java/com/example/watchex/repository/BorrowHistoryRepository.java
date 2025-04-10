@@ -2,6 +2,7 @@ package com.example.watchex.repository;
 
 import com.example.watchex.entity.BorrowHistory;
 import com.example.watchex.entity.BorrowRequest;
+import com.example.watchex.entity.Devices;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,4 +13,7 @@ public interface BorrowHistoryRepository extends JpaRepository<BorrowHistory, In
             "WHERE (p.borrowRequest = :#{#borrowRequest} )")
     BorrowHistory findByBorrowRequest(BorrowRequest borrowRequest);
 
+    @Query("SELECT p FROM BorrowHistory p " +
+            "WHERE (p.devices = :#{#devices} )")
+    BorrowHistory findByDevices(Devices devices);
 }

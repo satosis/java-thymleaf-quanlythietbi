@@ -2,9 +2,11 @@ package com.example.watchex.controller;
 
 import com.example.watchex.dto.DeviceDto;
 import com.example.watchex.dto.StoreBorrowRequestDto;
+import com.example.watchex.entity.BorrowHistory;
 import com.example.watchex.entity.BorrowRequest;
 import com.example.watchex.entity.Category;
 import com.example.watchex.entity.Devices;
+import com.example.watchex.service.BorrowHistoryService;
 import com.example.watchex.service.BorrowRequestService;
 import com.example.watchex.service.CategoryService;
 import com.example.watchex.service.DeviceService;
@@ -34,6 +36,8 @@ public class DeviceController {
     private CategoryService categoryService;
     @Autowired
     private BorrowRequestService borrowRequestService;
+    @Autowired
+    private BorrowHistoryService borrowHistoryService;
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {
@@ -141,9 +145,17 @@ public class DeviceController {
     @GetMapping("devices/delete/{id}")
     public String delete(@PathVariable("id") Integer id, RedirectAttributes ra) {
         try {
-            deviceService.show(id);
-            ra.addFlashAttribute("message", messageSource.getMessage("delete_device_success", new Object[0], LocaleContextHolder.getLocale()));
-            deviceService.delete(id);
+            Devices devices = deviceService.show(id);
+            BorrowHistory borrowHistory = borrowHistoryService.findByDevices(devices);
+            if (Objects.equals(devices.getAvailability_status(), "BORROWED") || Objects.equals(devices.getAvailability_status(), "UNDER_MAINTENANCE")) {
+                ra.addFlashAttribute("message_error", "Không thể xóa thiết bị");
+            } else if (borrowHistory != null) {
+                devices.setOperational_status("BROKEN");
+                deviceService.save(devices);
+            } else {
+                ra.addFlashAttribute("message", messageSource.getMessage("delete_device_success", new Object[0], LocaleContextHolder.getLocale()));
+                deviceService.delete(id);
+            }
             return "redirect:/";
         } catch (ClassNotFoundException exception) {
             ra.addFlashAttribute("message", exception.getMessage());

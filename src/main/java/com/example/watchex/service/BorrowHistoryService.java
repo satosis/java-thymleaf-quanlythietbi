@@ -2,6 +2,7 @@ package com.example.watchex.service;
 
 import com.example.watchex.entity.BorrowHistory;
 import com.example.watchex.entity.BorrowRequest;
+import com.example.watchex.entity.Devices;
 import com.example.watchex.repository.BorrowHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,8 @@ public class BorrowHistoryService {
     }
     public BorrowHistory findByBorrowRequest(BorrowRequest borrowRequest) {
         return borrowHistoryRepository.findByBorrowRequest(borrowRequest);
+    }
+    public BorrowHistory findByDevices(Devices devices) {
+        return borrowHistoryRepository.findByDevices(devices);
     }
 }

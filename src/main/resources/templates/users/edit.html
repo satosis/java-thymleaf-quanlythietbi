@@ -39,7 +39,7 @@
                     <span class="text-danger" th:if="${#fields.hasErrors('student_id')}"
                         th:errors="*{student_id}"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
                     <label for="role">Chức vụ</label>
                     <select class="form-control" th:field="*{role}" id="role">
                         <option value="ADMIN">Admin</option>
@@ -52,7 +52,7 @@
                     <input type="password" id="password" class="form-control" th:field="*{password}"
                         placeholder="Password">
                 </div>
-                <div class="form-group">
+                <div class="form-group" th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
                     <label for="password">[[#{status}]]</label>
                     <select id="fs" class="form-control mb-3" th:field="*{status}">
                         <option value="ACTIVE">Hoạt động</option>
