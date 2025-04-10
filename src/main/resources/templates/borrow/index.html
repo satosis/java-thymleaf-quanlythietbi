@@ -71,7 +71,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="form-group">
+                                                <div class="form-group text-left">
                                                     <label th:for="'status' + ${borrowRequest.id}">Trạng thái thiết
                                                         bị</label>
                                                     <select th:id="'status' + ${borrowRequest.id}" class="form-control">
@@ -79,7 +79,7 @@
                                                         <option value="MINOR_DAMAGE">Hư hỏng nhỏ</option>
                                                         <option value="MAJOR_DAMAGE">Hư hỏng nặng</option>
                                                     </select>
-                                                    <div class="form-control">
+                                                    <div class="text-left mt-3">
                                                         <label th:for="'loi' + ${borrowRequest.id}">Lỗi thiết bị (nếu
                                                             có)</label>
                                                         <textarea th:id="'loi' + ${borrowRequest.id}"

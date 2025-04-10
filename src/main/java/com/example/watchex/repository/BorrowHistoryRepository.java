@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BorrowHistoryRepository extends JpaRepository<BorrowHistory, Integer> {
     @Query("SELECT p FROM BorrowHistory p " +
-            "WHERE (p.borrowRequest = #{#borrowRequest} )")
+            "WHERE (p.borrowRequest = :#{#borrowRequest} )")
     BorrowHistory findByBorrowRequest(BorrowRequest borrowRequest);
 
 }

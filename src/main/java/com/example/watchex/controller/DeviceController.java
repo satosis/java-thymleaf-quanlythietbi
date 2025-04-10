@@ -176,6 +176,7 @@ public class DeviceController {
             StoreBorrowRequestDto storeBorrowRequestDto = new StoreBorrowRequestDto();
             model.addAttribute("title", "Gửi yêu cầu mượn sản phẩm " + devices.getName());
             model.addAttribute("devices", devices);
+            model.addAttribute("date", new Date());
             model.addAttribute("storeBorrowRequestDto", storeBorrowRequestDto);
             return "devices/request";
         } catch (ClassNotFoundException exception) {

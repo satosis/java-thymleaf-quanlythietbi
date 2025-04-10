@@ -27,14 +27,14 @@
                                     <input type="text" class="form-control" name="email" id="name" disabled th:value="${devices.name}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Lý do</label>
-                                    <textarea name="reason" id="des" cols="5" rows="2" autocomplete="off" th:field="*{reason}" class="form-control"></textarea>
+                                    <label for="reason">Lý do</label>
+                                    <textarea name="reason" id="reason" cols="5" rows="2" autocomplete="off" th:field="*{reason}" class="form-control"></textarea>
                                     <p th:if="${#fields.hasErrors('reason')}" class="text-danger"
                                     th:errors="*{reason}"></p>
                                 </div>
                                 <div class="form-group">
                                     <label for="dueDate">Ngày dự kiến trả thiết bị</label>
-                                    <input type="date" name="dueDate" id="dueDate" th:field="*{dueDate}" required>
+                                    <input type="date" name="dueDate" id="dueDate" th:field="*{dueDate}" th:min="${date}" required>
                                     <p th:if="${#fields.hasErrors('dueDate')}" class="text-danger"
                                        th:errors="*{dueDate}"></p>
                                 </div>

@@ -54,26 +54,26 @@ $('.qty').click(function () {
   var total = $('#amount').val();
   $('#amount').val(parseInt(total) - parseInt(price));
   if (number <= 1) {
-      toastr.warning("Số sản phẩm không được bằng 0");
-      return false;
+    toastr.warning("Số sản phẩm không được bằng 0");
+    return false;
   }
   number = number - 1;
 
   $.ajax({
-      url: URL,
-      data: {
-          qty: number,
-          idProduct: IdProduct
-      }
+    url: URL,
+    data: {
+      qty: number,
+      idProduct: IdProduct
+    }
   }).done(function (results) {
-      if (typeof results.totalMoney !== "underfined") {
-          $input.val(number);
-          $('.total').html(results.totalItem + "<span>VNĐ</span>");
-          $(".number").text(results.number);
-          $('#totalPrice').text(results.totalMoney);
-      } else {
-          $input.val(number + 1);
-      }
+    if (typeof results.totalMoney !== "underfined") {
+      $input.val(number);
+      $('.total').html(results.totalItem + "<span>VNĐ</span>");
+      $(".number").text(results.number);
+      $('#totalPrice').text(results.totalMoney);
+    } else {
+      $input.val(number + 1);
+    }
   })
 })
 
@@ -89,14 +89,10 @@ $("body").on('click', '.save_return', function (event) {
       loi: loi,
     },
     success: function (data) {
-      if (data.status == 200) {
-        toastr.success(data.message);
-        setTimeout(function () {
-          location.reload();
-        }, 2000);
-      } else {
-        toastr.error(data.message);
-      }
+      toastr.success("Hoàn trả thiết bị thành công");
+      setTimeout(function () {
+        location.reload();
+      }, 2000);
     },
   })
 })
