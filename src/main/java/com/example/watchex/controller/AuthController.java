@@ -82,6 +82,8 @@ public class AuthController {
             result.rejectValue("email", "error.email", "Tài khoản không tồn tại !");
             return "auth/login";
         }
+        user.setProvider("direct");
+        userService.save(user);
         if (Objects.equals(user.getRole(), "USER") && Objects.equals(user.getStatus(), "INACTIVE")) {
             String subject = "Xác nhận đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản";
             String template = "email/user-register-template";
@@ -99,14 +101,7 @@ public class AuthController {
             ra.addFlashAttribute("message", messageSource.getMessage("banned_user_success", new Object[0], LocaleContextHolder.getLocale()));
             return "auth/login";
         }
-        boolean checkPassword = new BCryptPasswordEncoder().matches(loginDto.getPassword(), user.getPassword());
-        if (!checkPassword) {
-            result.rejectValue("email", "error.email", "Tài khoản hoặc mật khẩu không chính xác !");
-            return "auth/login";
-        }
-        if (result.hasErrors()) {
-            return "auth/login";
-        }
+
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
