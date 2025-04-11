@@ -3,6 +3,7 @@ package com.example.watchex.controller;
 import com.example.watchex.dto.CategoryDto;
 import com.example.watchex.entity.Category;
 import com.example.watchex.service.CategoryService;
+import com.example.watchex.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -61,6 +62,7 @@ public class CategoryController {
         }
         Category category = new Category();
         category.setName(categoryDto.getName());
+        category.setSlug(CommonUtils.toSlug(categoryDto.getName()));
 
         categoryService.save(category);
         ra.addFlashAttribute("message", messageSource.getMessage("create_category_success", new Object[0], LocaleContextHolder.getLocale()));
@@ -92,6 +94,7 @@ public class CategoryController {
         }
         Category category = categoryService.show(id);
         category.setName(categoryDto.getName());
+        category.setSlug(CommonUtils.toSlug(categoryDto.getName()));
 
         categoryService.save(category);
         ra.addFlashAttribute("message", messageSource.getMessage("update_category_success", new Object[0], LocaleContextHolder.getLocale()));

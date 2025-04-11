@@ -11,10 +11,14 @@ import com.example.watchex.service.BorrowRequestService;
 import com.example.watchex.service.CategoryService;
 import com.example.watchex.service.DeviceService;
 import com.example.watchex.utils.CommonUtils;
+import com.example.watchex.utils.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -85,6 +91,7 @@ public class DeviceController {
         }
         Devices devices = new Devices();
         devices.setName(deviceDto.getName());
+        devices.setSlug(CommonUtils.toSlug(deviceDto.getName()));
         devices.setCategory(deviceDto.getCategory());
         devices.setDescription(deviceDto.getDescription());
         devices.setSerial_number(deviceDto.getSerial_number());
@@ -131,6 +138,7 @@ public class DeviceController {
         }
         Devices devices = deviceService.show(id);
         devices.setName(deviceDto.getName());
+        devices.setSlug(CommonUtils.toSlug(deviceDto.getName()));
         devices.setCategory(deviceDto.getCategory());
         devices.setDescription(deviceDto.getDescription());
         devices.setSerial_number(deviceDto.getSerial_number());
@@ -222,4 +230,25 @@ public class DeviceController {
         ra.addFlashAttribute("message", messageSource.getMessage("borrow_device_success", new Object[0], LocaleContextHolder.getLocale()));
         return "redirect:/";
     }
+
+    @GetMapping("devices/export")
+    public ResponseEntity<byte[]> exportToExcel() throws IOException {
+        Map<String, String> params = new HashMap<>();
+        params.put("pageSize", "100");
+        params.put("page", "0");
+        List<Devices> devices = deviceService.getDevices(params);
+        ExportExcel<Devices> exportExcel = new ExportExcel();
+        ByteArrayInputStream in = exportExcel.export(devices);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=Danh sách thiết bị.xlsx");
+        if (devices.isEmpty()) {
+            return (ResponseEntity<byte[]>) ResponseEntity.ok();
+        }
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(in.readAllBytes());
+    }
+
 }

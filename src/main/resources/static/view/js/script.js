@@ -90,7 +90,7 @@ $("body").on('click', '.save_return', function (event) {
     success: function (data) {
       toastr.success("Hoàn trả thiết bị thành công");
       setTimeout(function () {
-        // location.reload();
+        location.reload();
       }, 2000);
     },
   })

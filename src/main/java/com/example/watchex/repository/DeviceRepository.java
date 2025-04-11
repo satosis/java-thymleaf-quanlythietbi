@@ -16,6 +16,11 @@ public interface DeviceRepository extends JpaRepository<Devices, Integer> {
             "WHERE (p.availability_status LIKE %:#{#dto.getStatus()}% or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' )")
     Page<Devices> search(SearchDto dto, Pageable pageable);
 
+
+    @Query("SELECT p FROM Devices p " +
+            "WHERE (p.availability_status LIKE %:#{#dto.getStatus()}% or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' )")
+    List<Devices> listSearch(SearchDto dto);
+
     @Query("select p from Devices p where p.slug = :slug")
     DeviceDetailDto findBySlug(String slug);
 
