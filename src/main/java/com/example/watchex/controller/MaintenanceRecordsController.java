@@ -84,17 +84,14 @@ public class MaintenanceRecordsController {
         MaintenanceRecords maintenancerecords = maintenanceRecordsService.show(id);
         model.addAttribute("title", "Sửa thiết bị cần bảo trì");
         model.addAttribute("devicesList", devicesList);
-        model.addAttribute("maintenancerecords", maintenancerecords);
+        model.addAttribute("maintenance", maintenancerecords);
         return "maintenance/edit";
     }
 
     @PostMapping("edit")
-    public String update(BindingResult result,
+    public String update(
                          MaintenanceRecords maintenanceRecords,
                          RedirectAttributes ra) throws ClassNotFoundException {
-        if (result.hasErrors()) {
-            return "maintenance/edit";
-        }
         maintenanceRecords.setMaintenanceUser(CommonUtils.getCurrentUser());
         maintenanceRecordsService.save(maintenanceRecords);
         if (Objects.equals(maintenanceRecords.getMaintenance_status(), "COMPLETED")) {

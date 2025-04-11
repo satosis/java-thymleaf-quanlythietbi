@@ -5,7 +5,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
+            <h1 th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 [[#{devices}]]
                 <small><a th:href="@{'/devices/create'}" class="btn btn-primary">Thêm mới</a></small>
             </h1>

@@ -4,18 +4,18 @@
 
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">Thanh điều hướng</li>
-            <li th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
+            <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/borrow}">
                     <i class="fa fa-money"></i> <span>Yêu cầu mượn thiết bị</span>
                 </a>
             </li>
-            <li th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
+            <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/maintenance}">
                     <i class="fa fa-wrench"></i>
                     <span>Bảo trì thiết bị</span>
                 </a>
             </li>
-            <li th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
+            <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/category}">
                     <i class="fa fa-files-o"></i>
                     <span>Danh mục</span>
@@ -26,7 +26,7 @@
                     <i class="fa fa-th"></i> <span>Thiết bị</span>
                 </a>
             </li>
-            <li th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
+            <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/user}">
                     <i class="fa fa-user"></i>
                     <span>Người dùng</span>

@@ -35,8 +35,8 @@
                     <tr th:each="maintenance : ${maintenanceRecords}">
                         <td>[[${((currentPage - 1) * 10) + maintenanceStat.index + 1}]]</td>
                         <td>[[${maintenance.devices.name}]]</td>
-                        <td>[[${maintenance.reportedUser.name}]]</td>
-                        <td>[[${maintenance.maintenanceUser.name}]]</td>
+                        <td>[[${maintenance?.reportedUser?.name}]]</td>
+                        <td>[[${maintenance?.maintenanceUser?.name}]]</td>
                         <td th:if="${maintenance.maintenance_status == 'PENDING'}">Đang chờ</td>
                         <td th:if="${maintenance.maintenance_status == 'IN_PROGRESS'}">Đang sửa</td>
                         <td th:if="${maintenance.maintenance_status == 'COMPLETED'}">Đã sửa xong</td>

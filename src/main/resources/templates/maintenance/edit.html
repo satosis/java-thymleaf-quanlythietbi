@@ -19,12 +19,13 @@
         <section class="content">
             <form th:action="@{'/maintenance/edit'}" method="post" th:object="${maintenance}" class="col-md-8">
                 <input type="hidden" th:field="*{id}">
-                <div class="col-sm-6">
+                <input type="hidden" th:field="*{reportedUser}">
+                <div class="form-group">
                     <label for="fs" class="control-label">Thiết bị
                         <b class="col-red">(*)</b>
                     </label>
-                    <select id="fs" class="form-control" th:each="device : ${devicesList}" th:field="*{devices}">
-                        <option th:value="${device.id}">
+                    <select id="fs" class="form-control" th:field="*{devices}">
+                        <option th:each="device : ${devicesList}" th:value="${device.id}">
                             [[${device.name}]]
                         </option>
                     </select>
@@ -46,7 +47,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">[[#{submit}]]</button>
-                <a th:href="@{'/maintenance'}" class="btn btn-danger">[[#{back}]]</a>
+                <a th:href="@{'/MAINTENANCE'}" class="btn btn-danger">[[#{back}]]</a>
             </form>
 
         </section>

@@ -38,9 +38,9 @@
                                         <label for="fs" class="control-label">Danh mục
                                             <b class="col-red">(*)</b>
                                         </label>
-                                        <select id="fs" class="form-control" th:each="category : ${categories}"
+                                        <select id="fs" class="form-control"
                                                 th:field="*{category}">
-                                            <option th:value="${category.id}">
+                                            <option th:each="category : ${categories}" th:value="${category.id}">
                                                 [[${category.name}]]
                                             </option>
                                         </select>
