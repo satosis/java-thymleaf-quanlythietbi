@@ -44,14 +44,14 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
+    @GetMapping("/")
     public String get(Model model, @RequestParam Map<String, String> params) {
         if (CommonUtils.getCurrentUser() == null) {
             return "redirect:/auth/login";
         }
         Gson gson = new Gson();
         Page<Devices> devices = deviceService.get(params);
-        int totalUser = userService.getAll().size();
+        int totalUser = userService.getActive().size();
         int totalDevices = deviceService.getActive().size();
         ArrayList<String> listDay = CommonUtils.getListDayAndMonth();
         Page<Devices> hotDevices = deviceService.get(params);

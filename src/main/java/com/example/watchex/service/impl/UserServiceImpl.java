@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,5 +55,9 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer> implement
     public User findByEmail(String email) {
         Optional<User> result = Optional.ofNullable(repository.findByEmail(email));
         return result.orElse(null);
+    }
+    
+    public List<User> getActive() {
+        return repository.getActive();
     }
 }

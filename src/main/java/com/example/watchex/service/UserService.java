@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,4 +20,7 @@ public interface UserService extends GenericService<User, Integer> {
     boolean existsByEmail(String email);
 
     User findByEmail(String email) throws UsernameNotFoundException;
+    List<User> getActive();
+
+    
 }

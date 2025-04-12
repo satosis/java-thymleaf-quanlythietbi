@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT p FROM User p " +
@@ -20,4 +22,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(@Param("email") String email);
     @Query("SELECT count(u) FROM User u WHERE u.email = :email")
     int existsByEmail(String email);
+
+    @Query("select p from User p where p.status != 'DELETED'")
+    List<User> getActive();
 }
