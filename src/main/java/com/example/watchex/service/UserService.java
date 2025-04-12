@@ -7,11 +7,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public interface UserService extends GenericService<User, Integer> {
-    Page<User> get(int page);
+    Page<User> get(Map<String, String> params);
 
     User show(Integer id) throws UserPrincipalNotFoundException;
 

@@ -27,6 +27,6 @@ public interface DeviceRepository extends JpaRepository<Devices, Integer> {
     @Query("select p from Devices p where p.category.slug = :slug")
     Page<Devices> findBySlugCategory(String slug, Pageable pageable);
 
-    @Query("select p from Devices p where p.availability_status = 'WORKING'")
+    @Query("select p from Devices p where p.operational_status = 'WORKING'")
     List<Devices> getActive();
 }

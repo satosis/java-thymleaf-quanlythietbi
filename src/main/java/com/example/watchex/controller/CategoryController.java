@@ -43,7 +43,7 @@ public class CategoryController {
         model.addAttribute("totalPages", categories.getTotalPages());
         model.addAttribute("totalItems", categories.getTotalElements());
         model.addAttribute("categories", categories);
-        model.addAttribute("models", "categories");
+        model.addAttribute("models", "category");
         model.addAttribute("title", "Categories Management");
     }
 

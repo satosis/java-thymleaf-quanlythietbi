@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,8 @@ public class MaintenanceRecordsServiceImpl extends GenericServiceImpl<Maintenanc
         return result.orElse(null);
     }
 
+    public List<MaintenanceRecords> getAll(int page) {
+        return repository.findAll();
+    }
 
 }

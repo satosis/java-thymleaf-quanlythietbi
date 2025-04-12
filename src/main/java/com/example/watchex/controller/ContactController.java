@@ -54,6 +54,7 @@ public class ContactController {
     @GetMapping("create")
     public String create(Model model, ContactDto contactDto) {
         model.addAttribute("title", "Thêm liên hệ");
+        contactDto.setEmail(CommonUtils.getCurrentUser().getEmail());
         model.addAttribute("contactDto", contactDto);
         return "contact/create";
     }

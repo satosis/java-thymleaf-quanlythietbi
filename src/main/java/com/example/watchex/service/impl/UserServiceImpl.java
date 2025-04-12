@@ -1,5 +1,6 @@
 package com.example.watchex.service.impl;
 
+import com.example.watchex.dto.SearchDto;
 import com.example.watchex.entity.User;
 import com.example.watchex.repository.UserRepository;
 import com.example.watchex.service.UserService;
@@ -11,7 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,8 +24,19 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer> implement
     @Autowired
     private UserRepository repository;
 
-    public Page<User> get(int page) {
-        return repository.findAll(PageRequest.of(page - 1, 10, Sort.by("id").descending()));
+    @Override
+    public Page<User> get(Map<String, String> params) {
+        SearchDto dto = new SearchDto();
+        if (params.get("page") != null) {
+            dto.setPageIndex(Integer.parseInt(params.get("page")) - 1);
+        }
+        if (params.get("pageSize") != null) {
+            dto.setPageSize(Integer.parseInt(params.get("pageSize")));
+        }
+       if (params.get("status") != null) {
+            dto.setStatus(params.get("status"));
+        }
+        return repository.search(dto, (Pageable) PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
     }
 
     @Override

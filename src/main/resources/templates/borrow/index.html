@@ -85,7 +85,7 @@
                                                     <div class="text-left mt-3">
                                                         <label th:for="'loi' + ${borrowRequest.id}">Lỗi thiết bị (nếu
                                                             có)</label>
-                                                        <textarea th:id="'loi' + ${borrowRequest.id}"
+                                                        <textarea required th:id="'loi' + ${borrowRequest.id}"
                                                             class="form-control" rows="3"
                                                             placeholder="Mô tả lỗi"></textarea>
                                                     </div>

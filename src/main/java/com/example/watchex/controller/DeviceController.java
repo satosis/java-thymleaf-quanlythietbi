@@ -45,7 +45,7 @@ public class DeviceController {
     @Autowired
     private BorrowHistoryService borrowHistoryService;
 
-    @GetMapping("")
+    @GetMapping("device")
     public String get(Model model, @RequestParam Map<String, String> params) {
         if (CommonUtils.getCurrentUser() == null) {
             return "redirect:/auth/login";
@@ -233,10 +233,7 @@ public class DeviceController {
 
     @GetMapping("devices/export")
     public ResponseEntity<byte[]> exportToExcel() throws IOException {
-        Map<String, String> params = new HashMap<>();
-        params.put("pageSize", "100");
-        params.put("page", "0");
-        List<Devices> devices = deviceService.getDevices(params);
+        List<Devices> devices = deviceService.getActive();
         ExportExcel<Devices> exportExcel = new ExportExcel();
         ByteArrayInputStream in = exportExcel.export(devices);
 

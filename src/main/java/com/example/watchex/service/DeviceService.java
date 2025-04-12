@@ -35,13 +35,6 @@ public class DeviceService {
         return deviceRepository.search(dto, PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
     }
 
-    public List<Devices> getDevices(Map<String, String> params) {
-        SearchDto dto = new SearchDto();
-        if (Objects.equals(CommonConfigurations.getCurrentUser().getRole(), "USER")) {
-            dto.setStatus("AVAILABLE");
-        }
-        return deviceRepository.listSearch(dto);
-    }
     public List<Devices> getAll() {
         return deviceRepository.findAll();
     }

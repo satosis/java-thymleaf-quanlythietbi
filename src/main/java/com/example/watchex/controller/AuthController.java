@@ -117,6 +117,9 @@ public class AuthController {
                 .user(user)
                 .build();
         CommonUtils.setCookie("Authorization", "Bearer " + jwtToken);
+        if (Objects.equals(user.getRole(), "USER")) {
+            return "redirect:/device";
+        }
         return "redirect:/";
 //        return ResponseEntity.ok(new MessageEntity(200, jwt));
     }

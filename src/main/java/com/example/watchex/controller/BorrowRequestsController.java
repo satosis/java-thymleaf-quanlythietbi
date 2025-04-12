@@ -55,6 +55,7 @@ public class BorrowRequestsController {
         model.addAttribute("totalPages", borrowRequests.getTotalPages());
         model.addAttribute("totalItems", borrowRequests.getTotalElements());
         model.addAttribute("borrowRequests", borrowRequests);
+        model.addAttribute("models", "borrow");
         return model;
     }
 
@@ -93,26 +94,28 @@ public class BorrowRequestsController {
         BorrowHistory borrowHistory = borrowHistoryService.findByBorrowRequest(borrowRequest);
         Devices devices = borrowRequest.getDevices();
         borrowRequest.setStatus("RETURNED");
-        if (Objects.equals(params.get("status"), "GOOD")) {
-            borrowHistory.setExpectedReturnDate(new Date());
-            devices.setAvailability_status("AVAILABLE");
-        }
-        if (Objects.equals(params.get("status"), "MINOR_DAMAGE") || Objects.equals(params.get("status"), "MAJOR_DAMAGE")) {
-            borrowHistory.setStatusDevice(params.get("status"));
-            borrowHistory.setExpectedReturnDate(new Date());
+        if (borrowHistory != null) {
+            if (Objects.equals(params.get("status"), "GOOD")) {
+                borrowHistory.setExpectedReturnDate(new Date());
+                devices.setAvailability_status("AVAILABLE");
+            }
+            if (Objects.equals(params.get("status"), "MINOR_DAMAGE") || Objects.equals(params.get("status"), "MAJOR_DAMAGE")) {
+                borrowHistory.setStatusDevice(params.get("status"));
+                borrowHistory.setExpectedReturnDate(new Date());
 
-            devices.setOperational_status("NEEDS_REPAIR");
-            devices.setAvailability_status("UNDER_MAINTENANCE");
+                devices.setOperational_status("NEEDS_REPAIR");
+                devices.setAvailability_status("UNDER_MAINTENANCE");
 
-            MaintenanceRecords maintenanceRecords = new MaintenanceRecords();
-            maintenanceRecords.setDevices(devices);
-            maintenanceRecords.setLoiThietBi(params.get("loi"));
-            maintenanceRecords.setReportedUser(CommonUtils.getCurrentUser());
-            maintenanceRecords.setMaintenance_status("PENDING");
-            maintenanceRecordsService.save(maintenanceRecords);
+                MaintenanceRecords maintenanceRecords = new MaintenanceRecords();
+                maintenanceRecords.setDevices(devices);
+                maintenanceRecords.setLoiThietBi(params.get("loi"));
+                maintenanceRecords.setReportedUser(CommonUtils.getCurrentUser());
+                maintenanceRecords.setMaintenance_status("PENDING");
+                maintenanceRecordsService.save(maintenanceRecords);
+            }
+            borrowHistoryService.save(borrowHistory);
         }
         deviceService.save(devices);
-        borrowHistoryService.save(borrowHistory);
         borrowRequestService.save(borrowRequest);
         return "redirect:/borrow";
     }

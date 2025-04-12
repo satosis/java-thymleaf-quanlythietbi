@@ -1580,7 +1580,8 @@ a:focus {
   top: -10px;
   right: 10px;
   z-index: 0;
-  font-size: 90px;
+  font-size: 45px;
+  margin-top: 18px;
   color: rgba(0, 0, 0, 0.15);
 }
 .small-box:hover {
