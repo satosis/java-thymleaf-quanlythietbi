@@ -8,13 +8,12 @@
             <h1 th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 [[#{devices}]]
                 <small><a th:href="@{'/devices/create'}" class="btn btn-primary">Thêm mới</a></small>
-                <small><a th:href="@{'/devices/export'}" class="btn btn-primary">Export excel</a></small>
+                <!-- <small><a th:href="@{'/devices/export'}" class="btn btn-primary">Export excel</a></small> -->
             </h1>
             <ol class="breadcrumb">
                 <li><a th:href="@{'/devices'}" ><i class="fa fa-dashboard"></i> Trang chủ</a></li>
                 <li class="active"> [[#{devices}]]</li>
             </ol>
-            <!-- <div th:if="${message}" class="alert alert-success text-center mt-3">[[${message}]]</div> -->
         </section>
 
         <!-- Main content -->
