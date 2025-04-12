@@ -33,7 +33,7 @@ public class User implements UserDetails {
 
     private String provider;
 
-    @Column(length = 12)
+    @Column(length = 255)
     private String provider_id;
 
     private String phone;
