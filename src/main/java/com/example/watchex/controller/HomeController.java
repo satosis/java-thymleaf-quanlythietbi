@@ -49,6 +49,9 @@ public class HomeController {
         if (CommonUtils.getCurrentUser() == null) {
             return "redirect:/auth/login";
         }
+        if (CommonUtils.getCurrentUser().getRole() == "USER") {
+            return "redirect:/device";
+        }
         Gson gson = new Gson();
         Page<Devices> devices = deviceService.get(params);
         int totalUser = userService.getActive().size();
