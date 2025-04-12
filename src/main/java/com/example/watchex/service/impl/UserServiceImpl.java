@@ -36,7 +36,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer> implement
        if (params.get("status") != null) {
             dto.setStatus(params.get("status"));
         }
-        return repository.search(dto, (Pageable) PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
+        return repository.search(dto, PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
     }
 
     @Override
