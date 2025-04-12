@@ -24,7 +24,6 @@ $(".js-login").on('click', function (event) {
   toastr.warning('Bạn cần đăng nhập');
 })
 $(window).bind("load", function () {
-  jQuery("#status").fadeOut();
   jQuery("#loader").fadeOut();
 });
 

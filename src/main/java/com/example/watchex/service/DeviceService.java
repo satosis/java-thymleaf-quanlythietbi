@@ -21,17 +21,7 @@ public class DeviceService {
     @Autowired
     private DeviceRepository deviceRepository;
 
-    public Page<Devices> get(Map<String, String> params) {
-        SearchDto dto = new SearchDto();
-        if (params.get("page") != null) {
-            dto.setPageIndex(Integer.parseInt(params.get("page")) - 1);
-        }
-        if (params.get("pageSize") != null) {
-            dto.setPageSize(Integer.parseInt(params.get("pageSize")));
-        }
-        if (Objects.equals(CommonConfigurations.getCurrentUser().getRole(), "USER")) {
-            dto.setStatus("AVAILABLE");
-        }
+    public Page<Devices> get(SearchDto dto) {
         return deviceRepository.search(dto, PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
     }
 

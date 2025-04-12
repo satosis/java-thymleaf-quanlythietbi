@@ -4,6 +4,7 @@ import com.example.watchex.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -21,6 +22,7 @@ public class DeviceDto {
     private String serial_number;
 
     private String description;
+    private MultipartFile avatar = null;
 
     private String location;
 

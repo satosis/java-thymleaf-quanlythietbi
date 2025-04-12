@@ -46,8 +46,9 @@
                                         <div th:class="${#fields.hasErrors('message')} ? 'has-error form-group' : 'form-group'">
                                             <label for="des">Nội dung</label>
                                             <textarea name="message" id="des" cols="5" rows="2"
+                                            style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
                                                       autocomplete="off" th:field="*{message}"
-                                                      class="form-control"></textarea>
+                                                      class="textarea   form-control"></textarea>
                                             <p th:if="${#fields.hasErrors('message')}" class="text-danger"
                                                th:errors="*{message}"></p>
 

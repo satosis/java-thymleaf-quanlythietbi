@@ -1,6 +1,8 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.config.CommonConfigurations;
 import com.example.watchex.dto.DeviceDto;
+import com.example.watchex.dto.SearchDto;
 import com.example.watchex.dto.StoreBorrowRequestDto;
 import com.example.watchex.entity.BorrowHistory;
 import com.example.watchex.entity.BorrowRequest;
@@ -54,23 +56,50 @@ public class DeviceController {
         if (params.get("page") != null) {
             page = Integer.parseInt(params.get("page"));
         }
-        findPaginate(page, model);
-        model.addAttribute("title", "Quản lý sản phẩm");
-        return "devices/index";
-    }
 
-    private void findPaginate(int page, Model model) {
-        Map<String, String> params = new HashMap<>();
         params.put("pageSize", "10");
         params.put("page", String.valueOf(page));
-        Page<Devices> devices = deviceService.get(params);
+        SearchDto dto = new SearchDto();
+        if (params.get("id") != null && !Objects.equals(params.get("id"), "")) {
+            dto.setPageIndex(Integer.parseInt(params.get("id")));
+        }
+        if (params.get("page") != null) {
+            dto.setPageIndex(Integer.parseInt(params.get("page")) - 1);
+        }
+        if (params.get("pageSize") != null) {
+            dto.setPageSize(Integer.parseInt(params.get("pageSize")));
+        }
+        if (Objects.equals(CommonConfigurations.getCurrentUser().getRole(), "USER")) {
+            dto.setStatus("AVAILABLE");
+        }
+        if (params.get("status") != null && !Objects.equals(params.get("status"), "")) {
+            dto.setStatus(params.get("status"));
+        }
+        if (params.get("operationalStatus") != null&& !Objects.equals(params.get("operationalStatus"), "")) {
+            dto.setOperationalStatus(params.get("operationalStatus"));
+        }
+        if (params.get("name") != null&& !Objects.equals(params.get("name"), "")) {
+            dto.setName(params.get("name"));
+        }
+
+
+        if (params.get("category") != null && !Objects.equals(params.get("category"), "")) {
+            dto.setCategory(Integer.parseInt(params.get("category")));
+        }
+        List<Category> categories = categoryService.getAll();
+        Page<Devices> devices = deviceService.get(dto);
+        model.addAttribute("searchDto", dto);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", devices.getTotalPages());
         model.addAttribute("totalItems", devices.getTotalElements());
         model.addAttribute("devices", devices);
         model.addAttribute("models", "device");
+        model.addAttribute("categories", categories);
         model.addAttribute("title", "Devices Management");
+        model.addAttribute("title", "Quản lý sản phẩm");
+        return "devices/index";
     }
+
 
     @GetMapping("devices/create")
     public String create(Model model, DeviceDto deviceDto) {
@@ -102,7 +131,7 @@ public class DeviceController {
 
         deviceService.save(devices);
         ra.addFlashAttribute("message", messageSource.getMessage("create_device_success", new Object[0], LocaleContextHolder.getLocale()));
-        return "redirect:/";
+        return "redirect:/device";
     }
 
     @GetMapping("devices/edit/{id}")
@@ -181,7 +210,7 @@ public class DeviceController {
             devices.setOperational_status("AVAILABLE");
         }
         deviceService.save(devices);
-        return "redirect:/";
+        return "redirect:/device";
     }
 
     @GetMapping("devices/availability/{id}/{action}")
@@ -189,7 +218,7 @@ public class DeviceController {
         Devices devices = deviceService.show(id);
         devices.setAvailability_status(action);
         deviceService.save(devices);
-        return "redirect:/";
+        return "redirect:/device";
     }
 
     @GetMapping("devices/request/{id}")
@@ -204,7 +233,7 @@ public class DeviceController {
             return "devices/request";
         } catch (ClassNotFoundException exception) {
             ra.addFlashAttribute("message", exception.getMessage());
-            return "redirect:/";
+            return "redirect:/device";
         }
     }
 
@@ -228,7 +257,7 @@ public class DeviceController {
 
         borrowRequestService.save(borrowRequest);
         ra.addFlashAttribute("message", messageSource.getMessage("borrow_device_success", new Object[0], LocaleContextHolder.getLocale()));
-        return "redirect:/";
+        return "redirect:/device";
     }
 
     @GetMapping("devices/export")
@@ -238,7 +267,7 @@ public class DeviceController {
         ByteArrayInputStream in = exportExcel.export(devices);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=Danh sách thiết bị.xlsx");
+        headers.add("Content-Disposition", "attachment; filename=Danh_sach_thiet_bi.xlsx");
         if (devices.isEmpty()) {
             return (ResponseEntity<byte[]>) ResponseEntity.ok();
         }

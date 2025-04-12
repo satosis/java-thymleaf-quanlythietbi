@@ -1,33 +1,24 @@
 package com.example.watchex.controller;
 
-import com.example.watchex.dto.DeviceDto;
-import com.example.watchex.dto.StoreBorrowRequestDto;
-import com.example.watchex.entity.BorrowHistory;
-import com.example.watchex.entity.BorrowRequest;
-import com.example.watchex.entity.Category;
+import com.example.watchex.dto.SearchDto;
 import com.example.watchex.entity.Devices;
-import com.example.watchex.service.*;
+import com.example.watchex.service.BorrowRequestService;
+import com.example.watchex.service.CategoryService;
+import com.example.watchex.service.DeviceService;
+import com.example.watchex.service.UserService;
 import com.example.watchex.utils.CommonUtils;
-import com.example.watchex.utils.ExportExcel;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
 
 @Controller
 @RequestMapping("")
@@ -53,11 +44,14 @@ public class HomeController {
             return "redirect:/device";
         }
         Gson gson = new Gson();
-        Page<Devices> devices = deviceService.get(params);
+        SearchDto dto = new SearchDto();
+        dto.setPageIndex(0);
+        dto.setPageSize(10);
+        Page<Devices> devices = deviceService.get(dto);
         int totalUser = userService.getActive().size();
         int totalDevices = deviceService.getActive().size();
         ArrayList<String> listDay = CommonUtils.getListDayAndMonth();
-        Page<Devices> hotDevices = deviceService.get(params);
+        Page<Devices> hotDevices = deviceService.get(dto);
 
         model.addAttribute("totalPages", devices.getTotalPages());
         model.addAttribute("listDay", gson.toJson(listDay));

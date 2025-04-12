@@ -129,7 +129,7 @@ public class MaintenanceRecordsController {
         ByteArrayInputStream in = exportExcel.export(maintenanceRecords);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=Danh sách thiết bị.xlsx");
+        headers.add("Content-Disposition", "attachment; filename=Danh_sach_thiet_bi_bao_tri.xlsx");
         if (maintenanceRecords.isEmpty()) {
             return (ResponseEntity<byte[]>) ResponseEntity.ok();
         }
