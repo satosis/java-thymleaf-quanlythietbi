@@ -52,7 +52,7 @@ public class Devices {
 
     public String getAvatar() {
         if (this.avatar != null) {
-            return "http://localhost:8081/uploads/" + this.avatar;
+            return "http://localhost:8081/" + this.avatar;
         }
         return "http://localhost:8081/view/img/no-image.png";
     }

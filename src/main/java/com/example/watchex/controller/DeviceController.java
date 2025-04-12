@@ -8,10 +8,7 @@ import com.example.watchex.entity.BorrowHistory;
 import com.example.watchex.entity.BorrowRequest;
 import com.example.watchex.entity.Category;
 import com.example.watchex.entity.Devices;
-import com.example.watchex.service.BorrowHistoryService;
-import com.example.watchex.service.BorrowRequestService;
-import com.example.watchex.service.CategoryService;
-import com.example.watchex.service.DeviceService;
+import com.example.watchex.service.*;
 import com.example.watchex.utils.CommonUtils;
 import com.example.watchex.utils.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,8 @@ public class DeviceController {
     private BorrowRequestService borrowRequestService;
     @Autowired
     private BorrowHistoryService borrowHistoryService;
+    @Autowired
+    private ImageService imageService;
 
     @GetMapping("device")
     public String get(Model model, @RequestParam Map<String, String> params) {
@@ -112,18 +111,23 @@ public class DeviceController {
 
     @PostMapping("devices/create")
     public String save(@Valid @ModelAttribute("deviceDto") DeviceDto deviceDto,
-                       BindingResult result, RedirectAttributes ra, Model model) {
+                       BindingResult result, RedirectAttributes ra, Model model) throws IOException {
         List<Category> categories = categoryService.getAll();
         model.addAttribute("categories", categories);
         if (result.hasErrors()) {
             return "devices/create";
         }
+
         Devices devices = new Devices();
         devices.setName(deviceDto.getName());
         devices.setSlug(CommonUtils.toSlug(deviceDto.getName()));
         devices.setCategory(deviceDto.getCategory());
         devices.setDescription(deviceDto.getDescription());
         devices.setSerial_number(deviceDto.getSerial_number());
+        if (deviceDto.getAvatar().getOriginalFilename() != null && !Objects.equals(deviceDto.getAvatar().getOriginalFilename(), "")) {
+            String filePath = imageService.saveImage(deviceDto.getAvatar());
+            devices.setAvatar(filePath);
+        }
         devices.setUser(CommonUtils.getCurrentUser());
         devices.setLocation(deviceDto.getLocation());
         devices.setOperational_status("WORKING");
@@ -141,6 +145,7 @@ public class DeviceController {
             Devices devices = deviceService.show(id);
             deviceDto.setId(devices.getId());
             deviceDto.setName(devices.getName());
+            deviceDto.setAvatarName(devices.getAvatar());
             deviceDto.setCategory(devices.getCategory());
             deviceDto.setSerial_number(devices.getSerial_number());
             deviceDto.setDescription(devices.getDescription());
@@ -151,7 +156,7 @@ public class DeviceController {
             return "devices/edit";
         } catch (ClassNotFoundException exception) {
             ra.addFlashAttribute("message", exception.getMessage());
-            return "redirect:/";
+            return "redirect:/device";
         }
     }
 
@@ -159,16 +164,21 @@ public class DeviceController {
     public String update(@PathVariable("id") Integer id,
                          @Valid @ModelAttribute("deviceDto") DeviceDto deviceDto,
                          BindingResult result,
-                         RedirectAttributes ra, Model model) throws ClassNotFoundException {
+                         RedirectAttributes ra, Model model) throws ClassNotFoundException, IOException {
         List<Category> categories = categoryService.getAll();
         model.addAttribute("categories", categories);
         if (result.hasErrors()) {
             return "devices/edit";
         }
+
         Devices devices = deviceService.show(id);
         devices.setName(deviceDto.getName());
         devices.setSlug(CommonUtils.toSlug(deviceDto.getName()));
         devices.setCategory(deviceDto.getCategory());
+        if (deviceDto.getAvatar().getOriginalFilename() != null && !Objects.equals(deviceDto.getAvatar().getOriginalFilename(), "")) {
+            String filePath = imageService.saveImage(deviceDto.getAvatar());
+            devices.setAvatar(filePath);
+        }
         devices.setDescription(deviceDto.getDescription());
         devices.setSerial_number(deviceDto.getSerial_number());
         devices.setUser(CommonUtils.getCurrentUser());
@@ -176,7 +186,7 @@ public class DeviceController {
 
         deviceService.save(devices);
         ra.addFlashAttribute("message", messageSource.getMessage("update_device_success", new Object[0], LocaleContextHolder.getLocale()));
-        return "redirect:/";
+        return "redirect:/device";
     }
 
     @GetMapping("devices/delete/{id}")
@@ -193,10 +203,10 @@ public class DeviceController {
                 ra.addFlashAttribute("message", messageSource.getMessage("delete_device_success", new Object[0], LocaleContextHolder.getLocale()));
                 deviceService.delete(id);
             }
-            return "redirect:/";
+            return "redirect:/device";
         } catch (ClassNotFoundException exception) {
             ra.addFlashAttribute("message", exception.getMessage());
-            return "redirect:/";
+            return "redirect:/device";
         }
     }
 

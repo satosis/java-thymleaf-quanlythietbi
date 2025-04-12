@@ -420,12 +420,12 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="product : ${hotDevices}">
-                                            <td>[[${productStat.index + 1}]]</td>
-                                            <td>[[${product.id}]]</td>
-                                            <td>[[${product.name}]]</td>
+                                        <tr th:each="device : ${hotDevices}">
+                                            <td>[[${deviceStat.index + 1}]]</td>
+                                            <td>[[${device.id}]]</td>
+                                            <td>[[${device.name}]]</td>
                                             <td>
-                                                <img th:src="${product.avatar}" alt="avatar"
+                                                <img th:src="${device.avatar}" alt="avatar"
                                                      style="width:40px;height:40px;object-fit:contain">
                                             </td>
                                             <td>21</td>

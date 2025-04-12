@@ -93,7 +93,8 @@
                             </div>
                             <div class="box-body block-images">
                                 <div style="margin-bottom: 10px" class="image-area">
-                                    <img th:src="@{/view/img/no-image.png}" class="img-thumbnail"/>
+                                    <a class="remove-image d-block remove-image-function" th:data-id="${deviceDto.getId()}" th:if="!${deviceDto.getAvatarName().contains('no-image')}">×</a>
+                                    <img th:src="${deviceDto.getAvatarName()}" class="img-thumbnail">
                                 </div>
                                 <!-- <div style="position:relative;"> <a class="btn btn-primary" href="javascript:;"> Choose File...
                                 <input type="file" name="avatar" size="40" class="d-none js-upload"> </a> &nbsp; <span class="label label-info" id="upload-file-info"></span> </div> -->

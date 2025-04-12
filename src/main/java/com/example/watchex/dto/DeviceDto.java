@@ -23,6 +23,7 @@ public class DeviceDto {
 
     private String description;
     private MultipartFile avatar = null;
+    private String avatarName = null;
 
     private String location;
 
