@@ -87,6 +87,7 @@ public class UserController {
     public String update(User user, RedirectAttributes ra) {
         if (!Objects.equals(CommonUtils.getCurrentUser().getRole(), "ADMIN")) {
             user.setRole(CommonUtils.getCurrentUser().getRole());
+            user.setStatus(CommonUtils.getCurrentUser().getStatus());
         }
         userService.save(user);
         ra.addFlashAttribute("message", messageSource.getMessage("update_user_success", new Object[0], LocaleContextHolder.getLocale()));
