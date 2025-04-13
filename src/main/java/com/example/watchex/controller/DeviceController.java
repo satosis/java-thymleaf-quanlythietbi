@@ -81,7 +81,6 @@ public class DeviceController {
             dto.setName(params.get("name"));
         }
 
-
         if (params.get("category") != null && !Objects.equals(params.get("category"), "")) {
             dto.setCategory(Integer.parseInt(params.get("category")));
         }

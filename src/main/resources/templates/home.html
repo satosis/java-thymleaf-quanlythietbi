@@ -94,7 +94,7 @@
                         <div class="box-header">
                             <i class="fa fa-th"></i>
 
-                            <h3 class="box-title">Doanh thu theo ngày</h3>
+                            <h3 class="box-title">Thống kê lượt mượn theo ngày</h3>
 
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i
@@ -384,7 +384,7 @@
                         </div>
 
                         <figure class="highcharts-figure">
-                            <div id="container" th:data-json="${statusTransaction}"></div>
+                            <div id="container" th:data-json="${statusBorrowRequest}"></div>
 
                         </figure>
 
@@ -543,6 +543,8 @@
             style: 'currency',
             currency: 'VND',
         });
+        console.log(dataTransaction);
+
         data = JSON.parse(dataTransaction);
         ListDay = JSON.parse(dataTurnOver);
         dataListMoney = JSON.parse(dataListMoney);
@@ -555,7 +557,7 @@
                 type: 'pie'
             },
             title: {
-                text: 'Thống kê đơn hàng'
+                text: 'Thống kê yêu cầu'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -587,17 +589,17 @@
                 type: 'spline'
             },
             title: {
-                text: 'Doanh thu theo ngày'
+                text: 'Thống kê theo ngày'
             },
             subtitle: {
-                text: 'Doanh thu của từng ngày trong tháng'
+                text: 'Thống kê của từng ngày trong tháng'
             },
             xAxis: {
                 categories: ListDay
             },
             yAxis: {
                 title: {
-                    text: 'Doanh thu'
+                    text: 'Thống kê'
                 },
                 labels: {
                     formatter: function () {
@@ -619,14 +621,14 @@
                 }
             },
             series: [{
-                name: 'Hoàn tất giao dịch',
+                name: 'Đã cho mượn',
                 marker: {
                     symbol: 'square'
                 },
                 data: dataListMoney
             },
                 {
-                    name: 'Đang chờ xử lý',
+                    name: 'Đang chờ',
                     marker: {
                         symbol: 'square'
                     },

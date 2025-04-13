@@ -13,11 +13,11 @@ import java.util.List;
 public interface DeviceRepository extends JpaRepository<Devices, Integer> {
 
     @Query("SELECT p FROM Devices p " +
-            "WHERE (p.availability_status LIKE '%:#{#dto.getStatus()}%' or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' and" +
-            "(p.operational_status LIKE '%:#{#dto.getOperationalStatus()}%' or :#{#dto.getOperationalStatus()} is null or :#{#dto.getOperationalStatus()} = '' ) and" +
-            "(p.name LIKE '%:#{#dto.getName()}%' or :#{#dto.getName()} is null or :#{#dto.getName()} = '' ) and" +
+            "WHERE (p.availability_status = :#{#dto.getStatus()} or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '') and" +
+            "(p.operational_status = :#{#dto.getOperationalStatus()} or :#{#dto.getOperationalStatus()} is null or :#{#dto.getOperationalStatus()} = '' ) and" +
+            "(p.name LIKE %:#{#dto.getName()}% or :#{#dto.getName()} is null or :#{#dto.getName()} = '' ) and" +
             "(p.id = :#{#dto.getId()} or :#{#dto.getId()} is null ) and" +
-            "(p.category.id = :#{#dto.getCategory()} or :#{#dto.getCategory()} is null ))")
+            "(p.category.id = :#{#dto.getCategory()} or :#{#dto.getCategory()} is null )")
     Page<Devices> search(SearchDto dto, Pageable pageable);
 
 

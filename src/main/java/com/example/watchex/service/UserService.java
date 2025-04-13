@@ -22,5 +22,4 @@ public interface UserService extends GenericService<User, Integer> {
     User findByEmail(String email) throws UsernameNotFoundException;
     List<User> getActive();
 
-    
 }

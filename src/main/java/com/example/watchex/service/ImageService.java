@@ -12,13 +12,11 @@ public class ImageService {
     private String uploadDir;
 
     public String saveImage(MultipartFile file) throws IOException {
-        // Tạo thư mục nếu chưa tồn tại
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
 
-        // Lưu file vào thư mục
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         Path filePath = uploadPath.resolve(fileName);
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
