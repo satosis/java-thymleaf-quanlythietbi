@@ -7,10 +7,10 @@
         <section class="content-header">
             <h1>
                 [[#{user}]]
-                <small><a th:href="@{'/user/create'}" class="btn btn-primary">Thêm mới</a></small>
+                <small><a th:href="@{'/user/create'}" class="btn btn-primary">[[#{create}]]</a></small>
             </h1>
             <ol class="breadcrumb">
-                <li><a th:href="@{'/user'}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li><a th:href="@{'/user'}"><i class="fa fa-dashboard"></i> [[#{home}]]</a></li>
                 <li class="active"> [[#{user}]]</li>
             </ol>
         </section>
@@ -24,10 +24,11 @@
                         <td>#</td>
                         <td>[[#{username}]]</td>
                         <td>Email</td>
-                        <td>Chức vụ</td>
+                        <td>[[#{student_id}]]</td>
+                        <td>[[#{role}]]</td>
                         <td>[[#{status}]]</td>
                         <td>[[#{phone_number}]]</td>
-                        <td>Action</td>
+                        <td>[[#{action}]]</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,12 +39,13 @@
                         <td>[[${((currentPage - 1) * 10) + userStat.index + 1}]]</td>
                         <td>[[${user.name}]]</td>
                         <td>[[${user.email}]]</td>
-                        <td th:if="${user.role == 'ADMIN'}">Admin</td>
-                        <td th:if="${user.role == 'STAFF'}">Nhân viên</td>
-                        <td th:if="${user.role == 'USER'}">User</td>
-                        <td th:if="${user.status == 'ACTIVE'}">Hoạt động</td>
-                        <td class="text-danger" th:if="${user.status == 'SUSPENDED'}">Tạm ngưng</td>
-                        <td class="text-danger" th:if="${user.status == 'BANNED'}">Bị cấm</td>
+                        <td>[[${user.student_id}]]</td>
+                        <td th:if="${user.role == 'ADMIN'}">[[#{admin}]]</td>
+                        <td th:if="${user.role == 'STAFF'}">[[#{staff}]]</td>
+                        <td th:if="${user.role == 'USER'}">[[#{user}]]</td>
+                        <td th:if="${user.status == 'ACTIVE'}">[[#{active}]]</td>
+                        <td class="text-danger" th:if="${user.status == 'SUSPENDED'}">[[#{suspended}]]</td>
+                        <td class="text-danger" th:if="${user.status == 'BANNED'}">[[#{banned}]]</td>
                         <td>[[${user.phone}]]</td>
                         <td>
                             <a th:href="@{'/user/edit/' + ${user.id}}">

@@ -18,18 +18,18 @@
             <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/category}">
                     <i class="fa fa-files-o"></i>
-                    <span>Danh mục</span>
+                    <span>[[#{category}]]</span>
                 </a>
             </li>
             <li>
                 <a th:href="@{/device}">
-                    <i class="fa fa-th"></i> <span>Thiết bị</span>
+                    <i class="fa fa-th"></i> <span>[[#{device}]]</span>
                 </a>
             </li>
             <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/user}">
                     <i class="fa fa-user"></i>
-                    <span>Người dùng</span>
+                    <span>[[#{user}]]</span>
                 </a>
             </li>
             <li th:if="${@commonConfigurations?.currentUser?.role == 'USER'}">

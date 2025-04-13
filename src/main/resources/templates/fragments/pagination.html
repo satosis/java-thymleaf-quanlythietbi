@@ -4,10 +4,10 @@
     </div>
     <ul class="pagination">
         <li class="page-item disabled" th:if="${currentPage == 1}">
-            <a class="page-link" href="javascript:;" tabindex="-1">Previous</a>
+            <a class="page-link" href="javascript:;" tabindex="-1">[[#{previous}]]</a>
         </li>
         <li class="page-item" th:if="${currentPage > 1}">
-            <a class="page-link" th:href="@{'/' + ${models} + '?page=' + ${currentPage - 1}}" tabindex="-1">Previous</a>
+            <a class="page-link" th:href="@{'/' + ${models} + '?page=' + ${currentPage - 1}}" tabindex="-1">[[#{previous}]]</a>
         </li>
         <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}" >
             <a class="page-link" th:href="@{'/' + ${models} + '?page=' + ${i}}" th:if="${currentPage != i}">
@@ -18,10 +18,10 @@
             </a>
         </li>
         <li class="page-item disabled" th:if="${currentPage == totalPages}">
-            <a class="page-link" href="javascript:;" >Next</a>
+            <a class="page-link" href="javascript:;" >[[#{next}]]</a>
         </li>
         <li class="page-item" th:if="${currentPage < totalPages}">
-            <a class="page-link" th:href="@{'/' + ${models} + '?page=' + ${currentPage + 1}}">Next</a>
+            <a class="page-link" th:href="@{'/' + ${models} + '?page=' + ${currentPage + 1}}">[[#{next}]]</a>
         </li>
     </ul>
 </nav>
