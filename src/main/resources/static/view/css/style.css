@@ -361,3 +361,7 @@ body{font-family:SVNGBook;color:#333;margin:0;padding:0;font-size:15px;line-heig
     width: 235px;
     object-fit: cover;
 }
+
+.highcharts-data-label text, text.highcharts-data-label {
+    font-size: 1.2em !important;
+}
