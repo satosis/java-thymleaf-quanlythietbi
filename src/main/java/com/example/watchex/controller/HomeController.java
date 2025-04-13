@@ -42,7 +42,7 @@ public class HomeController {
         if (CommonUtils.getCurrentUser() == null) {
             return "redirect:/auth/login";
         }
-        if (CommonUtils.getCurrentUser().getRole() == "USER") {
+        if (Objects.equals(CommonUtils.getCurrentUser().getRole(), "USER")) {
             return "redirect:/device";
         }
         Gson gson = new Gson();
