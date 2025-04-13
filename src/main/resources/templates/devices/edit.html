@@ -7,11 +7,14 @@
 
         <section class="content-header">
             <!-- Content Header (Page header) -->
-            <h1> Thêm thiết bị</h1>
+            <h1 th:if="${@commonConfigurations?.currentUser?.role != 'USER'}"> Chỉnh sửa thiết bị</h1>
+            <h1 th:if="${@commonConfigurations?.currentUser?.role == 'USER'}"> Xem chi tiết thiết bị</h1>
             <ol class="breadcrumb">
                 <li><a th:href="@{''}"> Trang chủ</a></li>
                 <li><a th:href="@{'/devices'}">Thiết bị</a></li>
-                <li><a href="#" class="active">Thêm mới</a></li>
+                <li><a href="#" class="active">Chỉnh sửa</a></li>
+                <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}"><a href="#" class="active">Chỉnh sửa</a></li>
+                <li th:if="${@commonConfigurations?.currentUser?.role == 'USER'}"><a href="#" class="active">Xem chi tiết</a></li>
             </ol>
         </section>
         <!-- Main content -->
@@ -98,7 +101,7 @@
                                 </div>
                                 <!-- <div style="position:relative;"> <a class="btn btn-primary" href="javascript:;"> Choose File...
                                 <input type="file" name="avatar" size="40" class="d-none js-upload"> </a> &nbsp; <span class="label label-info" id="upload-file-info"></span> </div> -->
-                                <label for="thumbnail-stage" class="btn btn-primary">Choose File...</label>
+                                <label for="thumbnail-stage" class="btn btn-primary" th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">Choose File...</label>
                                 <input class="imageID d-none" type="file" id="thumbnail-stage" name="thumbnail_stage"
                                        style="display:none" th:field="*{avatar}"
                                        accept="image/*">
@@ -108,7 +111,7 @@
                     <div class="col-sm-12 clearfix">
                         <div class="box-footer text-center">
                             <a th:href="@{'/'}" class="btn btn-default"><i class="fa fa-arrow-left"></i>Quay lại</a>
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="btn btn-success" th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                                 <i class="fa fa-save"></i> Cập nhật
                             </button>
                         </div>

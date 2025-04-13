@@ -81,6 +81,8 @@
                                     cầu mượn</a>
                                 <a th:if="${@commonConfigurations?.currentUser?.role != 'USER'}" th:href="@{'/devices/edit/' + ${device.id}}" class="btn btn-secondary"><i
                                         class="fa fa-edit"></i> [[#{edit}]]</a>
+                                <a th:if="${@commonConfigurations?.currentUser?.role == 'USER'}" th:href="@{'/devices/edit/' + ${device.id}}" class="btn btn-secondary"><i
+                                    class="fa fa-edit"></i> Xem</a>
                                 <a th:if="${@commonConfigurations?.currentUser?.role != 'USER'}" th:href="@{'/devices/delete/' + ${device.id}}" class="btn btn-secondary"><i
                                         class="fa fa-trash text-danger"></i> [[#{delete}]]</a>
                             </td>

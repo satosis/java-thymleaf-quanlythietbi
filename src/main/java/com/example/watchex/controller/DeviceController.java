@@ -140,9 +140,7 @@ public class DeviceController {
     @GetMapping("devices/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, DeviceDto deviceDto) {
         try {
-            if (CommonUtils.getCurrentUser().getRole() == "USER") {
-                return "redirect:/device";
-            }
+
             List<Category> categories = categoryService.getAll();
             Devices devices = deviceService.show(id);
             deviceDto.setId(devices.getId());
@@ -172,7 +170,9 @@ public class DeviceController {
         if (result.hasErrors()) {
             return "devices/edit";
         }
-
+        if (CommonUtils.getCurrentUser().getRole() == "USER") {
+            return "redirect:/device";
+        }
         Devices devices = deviceService.show(id);
         devices.setName(deviceDto.getName());
         devices.setSlug(CommonUtils.toSlug(deviceDto.getName()));
