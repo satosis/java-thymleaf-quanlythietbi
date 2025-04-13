@@ -140,6 +140,9 @@ public class DeviceController {
     @GetMapping("devices/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, DeviceDto deviceDto) {
         try {
+            if (CommonUtils.getCurrentUser().getRole() == "USER") {
+                return "redirect:/device";
+            }
             List<Category> categories = categoryService.getAll();
             Devices devices = deviceService.show(id);
             deviceDto.setId(devices.getId());
@@ -191,6 +194,9 @@ public class DeviceController {
     @GetMapping("devices/delete/{id}")
     public String delete(@PathVariable("id") Integer id, RedirectAttributes ra) {
         try {
+            if (CommonUtils.getCurrentUser().getRole() == "USER") {
+                return "redirect:/device";
+            }
             Devices devices = deviceService.show(id);
             BorrowHistory borrowHistory = borrowHistoryService.findByDevices(devices);
             if (Objects.equals(devices.getAvailability_status(), "BORROWED") || Objects.equals(devices.getAvailability_status(), "UNDER_MAINTENANCE")) {
