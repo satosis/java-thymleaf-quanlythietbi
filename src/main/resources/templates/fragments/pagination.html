@@ -6,7 +6,7 @@
         <li class="page-item disabled" th:if="${currentPage == 1}">
             <a class="page-link" href="javascript:;" tabindex="-1">Previous</a>
         </li>
-        <li class="page-item" th:if="${currentPage != 0}">
+        <li class="page-item" th:if="${currentPage > 1}">
             <a class="page-link" th:href="@{'/' + ${models} + '?page=' + ${currentPage - 1}}" tabindex="-1">Previous</a>
         </li>
         <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}" >
