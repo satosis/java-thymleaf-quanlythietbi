@@ -1,7 +1,8 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.dto.UserDto;
 import com.example.watchex.entity.User;
-import com.example.watchex.service.DeviceService;
+import com.example.watchex.service.ImageService;
 import com.example.watchex.service.UserService;
 import com.example.watchex.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.Map;
 import java.util.Objects;
@@ -27,7 +29,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private DeviceService deviceService;
+    private ImageService imageService;
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {
         if (!Objects.equals(CommonUtils.getCurrentUser().getRole(), "ADMIN")) {
@@ -49,33 +51,45 @@ public class UserController {
     }
 
     @GetMapping("create")
-    public String create(Model model) {
+    public String create(Model model, UserDto userDto) {
         if (!Objects.equals(CommonUtils.getCurrentUser().getRole(), "ADMIN")) {
             return "redirect:/user/edit/" + CommonUtils.getCurrentUser().getId();
         }
-        model.addAttribute("user", new User());
+        model.addAttribute("user", userDto);
         model.addAttribute("title", "Thêm người dùng");
         return "users/create";
     }
 
     @PostMapping("save")
-    public String save(User user, RedirectAttributes ra) {
+    public String save(UserDto userDto, RedirectAttributes ra) throws IOException {
         int strength = 10; // work factor of bcrypt
-
+        User user = new User();
+        if (userDto.getAvatarFile().getOriginalFilename() != null && !Objects.equals(userDto.getAvatarFile().getOriginalFilename(), "")) {
+            String filePath = imageService.saveImage(userDto.getAvatarFile());
+            user.setAvatar(filePath);
+        }
         userService.save(user);
         ra.addFlashAttribute("message", messageSource.getMessage("create_user_success", new Object[0], LocaleContextHolder.getLocale()));
         return "redirect:/user";
     }
 
     @GetMapping("edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
+    public String edit(@PathVariable("id") Integer id, Model model, RedirectAttributes ra, UserDto userDto) {
         try {
             if (Objects.equals(CommonUtils.getCurrentUser().getRole(), "USER") && !Objects.equals(id, CommonUtils.getCurrentUser().getId())) {
                 return "redirect:/user/edit/" + CommonUtils.getCurrentUser().getId();
             }
             User user = userService.show(id);
+            userDto.setId(user.getId());
+            userDto.setName(user.getName());
+            userDto.setAvatar(user.getAvatar());
+            userDto.setEmail(user.getEmail());
+            userDto.setPhone(user.getPhone());
+            userDto.setRole(user.getRole());
+            userDto.setStatus(user.getStatus());
+            userDto.setStudentId(user.getStudent_id());
             model.addAttribute("title", "Sửa người dùng " + user.getName());
-            model.addAttribute("user", user);
+            model.addAttribute("user", userDto);
             return "users/edit";
         } catch (UserPrincipalNotFoundException exception) {
             ra.addFlashAttribute("message", exception.getMessage());
@@ -84,10 +98,15 @@ public class UserController {
     }
 
     @PostMapping("update")
-    public String update(User user, RedirectAttributes ra) {
+    public String update(UserDto userDto, RedirectAttributes ra) throws IOException {
+        User user = userService.getById(userDto.getId());
         if (!Objects.equals(CommonUtils.getCurrentUser().getRole(), "ADMIN")) {
             user.setRole(CommonUtils.getCurrentUser().getRole());
             user.setStatus(CommonUtils.getCurrentUser().getStatus());
+        }
+        if (userDto.getAvatarFile().getOriginalFilename() != null && !Objects.equals(userDto.getAvatarFile().getOriginalFilename(), "")) {
+            String filePath = imageService.saveImage(userDto.getAvatarFile());
+            user.setAvatar(filePath);
         }
         userService.save(user);
         ra.addFlashAttribute("message", messageSource.getMessage("update_user_success", new Object[0], LocaleContextHolder.getLocale()));

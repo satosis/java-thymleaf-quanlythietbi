@@ -17,16 +17,14 @@ public class UserDto {
 
     private String email;
     private String password;
-    private MultipartFile avatar = null;
+    private String avatar;
+    private MultipartFile avatarFile = null;
 
     private String oldpassword;
     private String re_password;
 
     @NotEmpty(message = "Thiếu số điện thoại")
     private String phone;
-
-    @NotEmpty(message = "Thiếu địa chỉ")
-    private String address;
 
     private String studentId;
     private String role;

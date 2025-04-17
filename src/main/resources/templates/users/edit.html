@@ -17,15 +17,16 @@
 
         <!-- Main content -->
         <section class="content">
-            <form th:action="@{'/user/update'}" method="post" th:object="${user}" class="col-md-8">
+            <form th:action="@{'/user/update'}" method="post" th:object="${user}">
+                <div class="col-md-8">
                 <input type="hidden" th:field="*{id}">
                 <div class="form-group">
                     <label for="name">[[#{name}]]</label>
-                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter name">
+                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Họ và tên">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Enter email">
+                    <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Email">
                 </div>
                 <div class="form-group has-feedback">
                     <label for="phone">[[#{phone_number}]]</label>
@@ -34,10 +35,10 @@
                 </div>
                 <div class="form-group has-feedback">
                     <label for="student_id">[[#{student_id}]]</label>
-                    <input type="text" th:field="*{student_id}" id="student_id" class="form-control" value="123456789"
+                    <input type="text" th:field="*{studentId}" id="student_id" class="form-control" value="123456789"
                         placeholder="Mã số sinh viên">
-                    <span class="text-danger" th:if="${#fields.hasErrors('student_id')}"
-                        th:errors="*{student_id}"></span>
+                    <span class="text-danger" th:if="${#fields.hasErrors('studentId')}"
+                        th:errors="*{studentId}"></span>
                 </div>
                 <div class="form-group" th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
                     <label for="role">[[#{role}]]</label>
@@ -50,7 +51,7 @@
                 <div class="form-group">
                     <label for="password">[[#{password}]]</label>
                     <input type="password" id="password" class="form-control" th:field="*{password}"
-                        placeholder="Password">
+                        placeholder="Mật khẩu">
                 </div>
                 <div class="form-group" th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
                     <label for="password">[[#{status}]]</label>
@@ -62,6 +63,26 @@
                 </div>
                 <button type="submit" class="btn btn-primary">[[#{submit}]]</button>
                 <a th:href="@{'/user'}" class="btn btn-danger">[[#{back}]]</a>
+            </div>
+            <div class="col-md-4">
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Ảnh đại diện</h3>
+                    </div>
+                    <div class="box-body block-images">
+                        <div style="margin-bottom: 10px" class="image-area">
+                            <a class="remove-image d-block remove-image-function" th:data-id="${deviceDto.getId()}" th:if="!${user.getAvatar().contains('no-image')}">×</a>
+                            <img th:src="${user.getAvatar()}" class="img-thumbnail">
+                        </div>
+                        <!-- <div style="position:relative;"> <a class="btn btn-primary" href="javascript:;"> Choose File...
+                        <input type="file" name="avatar" size="40" class="d-none js-upload"> </a> &nbsp; <span class="label label-info" id="upload-file-info"></span> </div> -->
+                        <label for="thumbnail-stage" class="btn btn-primary">Choose File...</label>
+                        <input class="imageID d-none" type="file" id="thumbnail-stage" name="thumbnail_stage"
+                               style="display:none" th:field="*{avatarFile}"
+                               accept="image/*">
+                    </div>
+                </div>
+            </div>
             </form>
 
         </section>

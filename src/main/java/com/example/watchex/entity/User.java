@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.sql.Blob;
@@ -50,25 +51,6 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    public String getAvatar() {
-        String[] partsCollArr;
-        if (this.avatar != null) {
-            partsCollArr = this.avatar.split("__");
-            String dateAvatar = partsCollArr[0].replace('-', '/');
-            return "http://localhost:8081/uploads/user/" + dateAvatar + "/" + this.avatar;
-        }
-        return "http://localhost:8081/view/img/no-image.png";
-    }
-
-    public String getOriginalAvatar() {
-        String[] partsCollArr;
-        if (this.avatar != null) {
-            partsCollArr = this.avatar.split("__");
-            String dateAvatar = partsCollArr[0].replace('-', '/');
-            return "/uploads/user/" + dateAvatar + "/" + this.avatar;
-        }
-        return null;
-    }
     public void setPassword(String password) {
         this.password = CommonUtils.encode(password);
     }
@@ -101,5 +83,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getAvatar() {
+        if (this.avatar != null) {
+            return "http://localhost:8081/" + this.avatar;
+        }
+        return "http://localhost:8081/view/img/no-image.png";
     }
 }

@@ -39,34 +39,5 @@ public class ProfileController {
         return "user/edit";
     }
 
-    @PostMapping("/edit")
-    public String register(@Valid @ModelAttribute("editProfileDto") UserDto editProfileDto, BindingResult result) throws Exception {
-        User user = CommonUtils.getCurrentUser();
-        if (result.hasErrors()) {
-            return "user/edit";
-        }
-        if (!Objects.equals(editProfileDto.getAvatar().getOriginalFilename(), "")) {
-            CommonUtils.deleteImage(user.getOriginalAvatar());
-            String path = CommonUtils.saveImageToStorage("user", editProfileDto.getAvatar());
-            user.setAvatar(path);
-        }
-        if (!Objects.equals(editProfileDto.getPassword(), "")) {
-            boolean checkSamePassword = editProfileDto.getRe_password().equals(editProfileDto.getPassword());
-            if (!checkSamePassword) {
-                result.rejectValue("re_password", "error.re_password", "Mật khẩu xác nhận không chính xác !");
-                return "user/edit";
-            }
-            boolean checkPassword = new BCryptPasswordEncoder().matches(editProfileDto.getOldpassword(), user.getPassword());
-            if (!checkPassword) {
-                result.rejectValue("oldpassword", "error.oldpassword", "Mật khẩu không chính xác !");
-                return "user/edit";
-            }
-            user.setPassword(editProfileDto.getPassword());
-        }
-        user.setName(editProfileDto.getName());
-        user.setPhone(editProfileDto.getPhone());
-        userService.save(user);
 
-        return "redirect:/profile";
-    }
 }
