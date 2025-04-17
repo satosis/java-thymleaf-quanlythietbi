@@ -1,5 +1,6 @@
 package com.example.watchex.service.impl;
 
+import com.example.watchex.dto.SearchDto;
 import com.example.watchex.entity.MaintenanceRecords;
 import com.example.watchex.repository.MaintenanceRecordsRepository;
 import com.example.watchex.service.MaintenanceRecordsService;
@@ -20,8 +21,8 @@ public class MaintenanceRecordsServiceImpl extends GenericServiceImpl<Maintenanc
     @Autowired
     private MaintenanceRecordsRepository repository;
 
-    public Page<MaintenanceRecords> get(int page) {
-        return repository.findAll(PageRequest.of(page - 1, 10, Sort.by("id").descending()));
+    public Page<MaintenanceRecords> get(SearchDto dto) {
+        return repository.search(dto, PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
     }
 
     @Override

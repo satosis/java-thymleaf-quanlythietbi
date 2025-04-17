@@ -17,7 +17,7 @@
 
     <!-- Main content -->
     <section class="content">
-      <form th:action="@{'/user/save'}" method="post" th:object="${user}">
+      <form th:action="@{'/user/save'}" method="post" th:object="${user}" enctype="multipart/form-data">
         <div class="col-md-8">
           <div class="form-group">
           <label for="name">[[#{username}]]</label>

@@ -1,13 +1,8 @@
 package com.example.watchex.controller;
 
-import com.example.watchex.entity.BorrowHistory;
-import com.example.watchex.entity.BorrowRequest;
-import com.example.watchex.entity.Devices;
-import com.example.watchex.entity.MaintenanceRecords;
-import com.example.watchex.service.BorrowHistoryService;
-import com.example.watchex.service.BorrowRequestService;
-import com.example.watchex.service.DeviceService;
-import com.example.watchex.service.MaintenanceRecordsService;
+import com.example.watchex.dto.SearchDto;
+import com.example.watchex.entity.*;
+import com.example.watchex.service.*;
 import com.example.watchex.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -36,6 +32,8 @@ public class BorrowRequestsController {
     private BorrowHistoryService borrowHistoryService;
     @Autowired
     private MaintenanceRecordsService maintenanceRecordsService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {
@@ -43,20 +41,38 @@ public class BorrowRequestsController {
         if (params.get("page") != null) {
             page = Integer.parseInt(params.get("page"));
         }
-        findPaginate(page, model);
-        model.addAttribute("id", params.get("id"));
-        model.addAttribute("title", "Quản lý yêu cầu mượn");
-        return "borrow/index";
-    }
+        List<User> users = userService.getAll();
+        SearchDto dto = new SearchDto();
+        if (params.get("id") != null && !Objects.equals(params.get("id"), "")) {
+            dto.setPageIndex(Integer.parseInt(params.get("id")));
+        }
+        if (params.get("page") != null) {
+            dto.setPageIndex(Integer.parseInt(params.get("page")) - 1);
+        }
+        if (params.get("pageSize") != null) {
+            dto.setPageSize(Integer.parseInt(params.get("pageSize")));
+        }
+        if (params.get("status") != null && !Objects.equals(params.get("status"), "")) {
+            dto.setStatus(params.get("status"));
+        }
+        if (params.get("name") != null&& !Objects.equals(params.get("name"), "")) {
+            dto.setName(params.get("name"));
+        }
 
-    private Model findPaginate(int page, Model model) {
-        Page<BorrowRequest> borrowRequests = borrowRequestService.get(page);
+        if (params.get("user") != null && !Objects.equals(params.get("user"), "")) {
+            dto.setUser(Integer.parseInt(params.get("user")));
+        }
+        Page<BorrowRequest> borrowRequests = borrowRequestService.get(dto);
         model.addAttribute("currentPage", page);
+        model.addAttribute("searchDto", dto);
         model.addAttribute("totalPages", borrowRequests.getTotalPages());
         model.addAttribute("totalItems", borrowRequests.getTotalElements());
         model.addAttribute("borrowRequests", borrowRequests);
         model.addAttribute("models", "borrow");
-        return model;
+        model.addAttribute("id", params.get("id"));
+        model.addAttribute("users", users);
+        model.addAttribute("title", "Quản lý yêu cầu mượn");
+        return "borrow/index";
     }
 
     @GetMapping("/accept/{id}")

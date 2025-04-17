@@ -25,6 +25,14 @@ public interface DeviceRepository extends JpaRepository<Devices, Integer> {
             "WHERE (p.availability_status LIKE %:#{#dto.getStatus()}% or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' )")
     List<Devices> listSearch(SearchDto dto);
 
+    @Query("SELECT p.id as id, p.avatar as avatar, p.name as name, count(rq.id) as pay FROM Devices p " +
+            " JOIN BorrowRequest rq on p=rq.devices" +
+            " where rq.status != 'PENDING' and rq.status != 'REJECTED'" +
+            " group by p.id " +
+            " order by count(rq.id) desc")
+    List<DeviceDetailDto> getHot();
+
+
     @Query("select p from Devices p where p.slug = :slug")
     DeviceDetailDto findBySlug(String slug);
 

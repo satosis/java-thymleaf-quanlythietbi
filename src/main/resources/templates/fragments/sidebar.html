@@ -10,6 +10,11 @@
                 </a>
             </li>
             <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
+                <a th:href="@{/history}">
+                    <i class="fa fa-money"></i> <span>Lịch sử mượn thiết bị</span>
+                </a>
+            </li>
+            <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/maintenance}">
                     <i class="fa fa-wrench"></i>
                     <span>Bảo trì thiết bị</span>

@@ -17,7 +17,7 @@
 
         <!-- Main content -->
         <section class="content">
-            <form th:action="@{'/user/update'}" method="post" th:object="${user}">
+            <form th:action="@{'/user/update'}" method="post" th:object="${user}" enctype="multipart/form-data">
                 <div class="col-md-8">
                 <input type="hidden" th:field="*{id}">
                 <div class="form-group">
@@ -71,7 +71,7 @@
                     </div>
                     <div class="box-body block-images">
                         <div style="margin-bottom: 10px" class="image-area">
-                            <a class="remove-image d-block remove-image-function" th:data-id="${deviceDto.getId()}" th:if="!${user.getAvatar().contains('no-image')}">×</a>
+                            <a class="remove-image d-block remove-image-function" th:data-id="${user.getId()}" th:if="!${user.getAvatar().contains('no-image')}">×</a>
                             <img th:src="${user.getAvatar()}" class="img-thumbnail">
                         </div>
                         <!-- <div style="position:relative;"> <a class="btn btn-primary" href="javascript:;"> Choose File...

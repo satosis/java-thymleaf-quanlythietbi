@@ -7,7 +7,32 @@
         <section class="content-header">
             <h1>
                 [[#{maintenance}]]
-                <small><a th:href="@{'/maintenance/export'}" class="btn btn-primary">Export excel</a></small>
+                <div class="box-title">
+                    <form class="form-inline" th:object="${searchDto}">
+                        <input type="text" class="form-control" th:field="*{name}" name="name"
+                            placeholder="Tên thiết bị ...">
+                            <select id="fs" class="form-control" th:field="*{reporter}">
+                                <option value="">Người báo lỗi</option>
+                                <option th:each="user : ${reporters}" th:value="${user.id}">
+                                    [[${user.name}]]
+                                </option>
+                            </select>
+                            <select id="fs" class="form-control" th:field="*{user}">
+                                <option value="">Nhân viên sửa chữa</option>
+                                <option th:each="user : ${users}" th:value="${user.id}">
+                                    [[${user.name}]]
+                                </option>
+                            </select>
+                        <select name="availability_status" th:field="*{status}" class="form-control">
+                            <option value="">Trạng thái</option>
+                            <option value="PENDING">Đang chờ</option>
+                            <option value="IN_PROGRESS">Đang sửa</option>
+                            <option value="COMPLETED">Đã sửa xong</option>
+                        </select>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        <small><a th:href="@{'/maintenance/export'}" class="btn btn-primary">Export excel</a></small>
+                    </form>
+                </div>
             </h1>
             <ol class="breadcrumb">
                 <li><a th:href="@{'/maintenance'}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>

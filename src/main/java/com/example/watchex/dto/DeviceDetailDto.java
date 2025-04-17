@@ -15,10 +15,9 @@ public interface DeviceDetailDto {
 
     Category getCategory();
 
-
     Integer getUser();
 
-    Integer getPro_pay();
+    Integer getPay();
 
     String getPro_description();
 

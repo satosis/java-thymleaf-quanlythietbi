@@ -1,8 +1,8 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.dto.DeviceDetailDto;
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.dto.TransactionRevenueDto;
-import com.example.watchex.entity.BorrowRequest;
 import com.example.watchex.entity.Devices;
 import com.example.watchex.service.BorrowRequestService;
 import com.example.watchex.service.CategoryService;
@@ -10,7 +10,7 @@ import com.example.watchex.service.DeviceService;
 import com.example.watchex.service.UserService;
 import com.example.watchex.utils.CommonUtils;
 import com.google.gson.Gson;
-import java.util.List;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.assertj.core.util.Lists;
+
 import java.util.*;
 
 @Controller
@@ -53,7 +53,7 @@ public class HomeController {
         int totalUser = userService.getActive().size();
         int totalDevices = deviceService.getActive().size();
         ArrayList<String> listDay = CommonUtils.getListDayAndMonth();
-        Page<Devices> hotDevices = deviceService.get(dto);
+        List<DeviceDetailDto> hotDevices = deviceService.getHot();
 
         int borrowRequestProcess = borrowRequestService.getByStatus("PENDING").size();
         int borrowRequestApproved = borrowRequestService.getByStatus("APPROVED").size();
@@ -100,7 +100,7 @@ public class HomeController {
             arrRevenueTransactionMonth.add(total);
             total = 0;
 
-                arrRevenueTransactionMonthDefault.add(total);
+            arrRevenueTransactionMonthDefault.add(total);
         }
 
 

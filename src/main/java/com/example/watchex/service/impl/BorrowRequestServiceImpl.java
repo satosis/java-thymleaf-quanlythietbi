@@ -1,5 +1,6 @@
 package com.example.watchex.service.impl;
 
+import com.example.watchex.dto.SearchDto;
 import com.example.watchex.dto.TransactionRevenueDto;
 import com.example.watchex.entity.BorrowRequest;
 import com.example.watchex.repository.BorrowRequestRepository;
@@ -22,8 +23,8 @@ public class BorrowRequestServiceImpl extends GenericServiceImpl<BorrowRequest, 
     @Autowired
     private BorrowRequestRepository repository;
 
-    public Page<BorrowRequest> get(Integer page) {
-        return repository.findAll(PageRequest.of(page - 1, 10, Sort.by("id").descending()));
+    public Page<BorrowRequest> get(SearchDto dto) {
+        return repository.search(dto, PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
     }
 
     @Override

@@ -22,6 +22,8 @@ public class SearchDto implements Serializable {
     private String asc;
     private String name;
     private Integer category;
+    private Integer user;
+    private Integer reporter;
     private String desc="createdDate";
     public SearchDto(Integer pageSize,Integer pageIndex){
         this.pageSize = pageSize;

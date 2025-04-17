@@ -1,10 +1,13 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.dto.SearchDto;
 import com.example.watchex.entity.Devices;
 import com.example.watchex.entity.MaintenanceRecords;
+import com.example.watchex.entity.User;
 import com.example.watchex.service.BorrowHistoryService;
 import com.example.watchex.service.DeviceService;
 import com.example.watchex.service.MaintenanceRecordsService;
+import com.example.watchex.service.UserService;
 import com.example.watchex.utils.CommonUtils;
 import com.example.watchex.utils.ExportExcel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,8 @@ public class MaintenanceRecordsController {
 
     @Autowired
     private BorrowHistoryService borrowHistoryService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {
@@ -48,20 +53,43 @@ public class MaintenanceRecordsController {
         if (params.get("page") != null) {
             page = Integer.parseInt(params.get("page"));
         }
-        findPaginate(page, model);
-        model.addAttribute("id", params.get("id"));
-        model.addAttribute("title", "Quản lý bảo trì thiết bị");
-        return "maintenance/index";
-    }
+        SearchDto dto = new SearchDto();
+        if (params.get("id") != null && !Objects.equals(params.get("id"), "")) {
+            dto.setPageIndex(Integer.parseInt(params.get("id")));
+        }
+        if (params.get("page") != null) {
+            dto.setPageIndex(Integer.parseInt(params.get("page")) - 1);
+        }
+        if (params.get("pageSize") != null) {
+            dto.setPageSize(Integer.parseInt(params.get("pageSize")));
+        }
+        if (params.get("status") != null && !Objects.equals(params.get("status"), "")) {
+            dto.setStatus(params.get("status"));
+        }
+        if (params.get("name") != null && !Objects.equals(params.get("name"), "")) {
+            dto.setName(params.get("name"));
+        }
 
-    private Model findPaginate(int page, Model model) {
-        Page<MaintenanceRecords> maintenanceRecords = maintenanceRecordsService.get(page);
+        if (params.get("user") != null && !Objects.equals(params.get("user"), "")) {
+            dto.setUser(Integer.parseInt(params.get("user")));
+        }
+        if (params.get("reporter") != null && !Objects.equals(params.get("reporter"), "")) {
+            dto.setReporter(Integer.parseInt(params.get("reporter")));
+        }
+        Page<MaintenanceRecords> maintenanceRecords = maintenanceRecordsService.get(dto);
+        List<User> users = userService.getAll();
+        List<User> reporters = userService.getAll();
         model.addAttribute("currentPage", page);
+        model.addAttribute("users", users);
+        model.addAttribute("reporters", reporters);
+        model.addAttribute("searchDto", dto);
         model.addAttribute("models", "maintenance");
         model.addAttribute("totalPages", maintenanceRecords.getTotalPages());
         model.addAttribute("totalItems", maintenanceRecords.getTotalElements());
         model.addAttribute("maintenanceRecords", maintenanceRecords);
-        return model;
+        model.addAttribute("id", params.get("id"));
+        model.addAttribute("title", "Quản lý bảo trì thiết bị");
+        return "maintenance/index";
     }
 
     @GetMapping("create")
@@ -98,8 +126,8 @@ public class MaintenanceRecordsController {
 
     @PostMapping("edit")
     public String update(
-                         MaintenanceRecords maintenanceRecords,
-                         RedirectAttributes ra) throws ClassNotFoundException {
+            MaintenanceRecords maintenanceRecords,
+            RedirectAttributes ra) throws ClassNotFoundException {
         maintenanceRecords.setMaintenanceUser(CommonUtils.getCurrentUser());
         maintenanceRecordsService.save(maintenanceRecords);
         if (Objects.equals(maintenanceRecords.getMaintenance_status(), "COMPLETED")) {
@@ -119,7 +147,7 @@ public class MaintenanceRecordsController {
         return "redirect:/maintenance";
     }
 
-   @GetMapping("export")
+    @GetMapping("export")
     public ResponseEntity<byte[]> exportToExcel() throws IOException {
         Map<String, String> params = new HashMap<>();
         params.put("pageSize", "100");

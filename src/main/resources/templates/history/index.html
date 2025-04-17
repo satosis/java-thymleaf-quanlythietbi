@@ -1,0 +1,84 @@
+<div th:include="/fragments/layout"></div>
+<div class="wrapper">
+    <div th:replace="/fragments/header :: header"></div>
+    <div th:replace="/fragments/sidebar :: aside"></div>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Lịch sử mượn thiết bị
+                <div class="box-title">
+                    <form class="form-inline" th:object="${searchDto}">
+                        <input type="text" class="form-control" th:field="*{name}" name="name"
+                            placeholder="Tên thiết bị ...">
+                        <select id="fs" class="form-control" th:field="*{user}">
+                            <option value="">Người mượn</option>
+                            <option th:each="user : ${users}" th:value="${user.id}">
+                                [[${user.name}]]
+                            </option>
+                        </select>
+                        <select name="operational_status" th:field="*{status}" class="form-control">
+                            <option value="">Trạng thái thiết bị</option>
+                            <option value="GOOD">Tốt</option>
+                            <option value="MINOR_DAMAGE">Hư hỏng nhỏ</option>
+                            <option value="MAJOR_DAMAGE">Hư hỏng nặng</option>
+                        </select>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Tìm kiếm</button>
+                    </form>
+                </div>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{'/borrow'}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li class="active"> [[#{borrow}]]</li>
+            </ol>
+            <!-- <div th:if="${message}" class="alert alert-success text-center mt-3">[[${message}]]</div> -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="col-md-12">
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Người mượn</td>
+                            <td>[[#{devices}]]</td>
+                            <td>[[#{request_date}]]</td>
+                            <td>[[#{due_date}]]</td>
+                            <td>Ngày trả thực tế</td>
+                            <td>Trạng thái thiết bị</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${borrowHistories.isEmpty()}">
+                            <th colspan="6">[[#{no_result_found}]]</th>
+                        </tr>
+                        <tr th:each="borrowHistory : ${borrowHistories}">
+                            <td>[[${((currentPage - 1) * 10) +borrowHistoryStat.index + 1}]]</td>
+                            <td>[[${borrowHistory.user.name}]]</td>
+                            <td>[[${borrowHistory.devices.name}]]</td>
+                            <td>[[${borrowHistory.borrowDate}]]</td>
+                            <td>[[${borrowHistory.expectedReturnDate}]]</td>
+                            <td>[[${borrowHistory.actualReturnDate}]]</td>
+
+                            <td th:if="${borrowHistory.statusDevice == 'GOOD'}">
+                                <span class="text-success">Tốt</span>
+                            </td>
+                            <td th:if="${borrowHistory.statusDevice == 'MINOR_DAMAGE'}">
+                                <span class="text-danger">Hư hỏng nhỏ</span>
+                            </td>
+                            <td th:if="${borrowHistory.statusDevice == 'MAJOR_DAMAGE'}">
+                                <span class="text-danger">Hư hỏng nặng</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="box-footer" th:include="/fragments/pagination">
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+</div>
+<!-- /.content-wrapper -->
+<div th:include="/fragments/footer"></div>

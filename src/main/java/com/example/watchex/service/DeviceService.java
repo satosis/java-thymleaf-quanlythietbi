@@ -1,6 +1,5 @@
 package com.example.watchex.service;
 
-import com.example.watchex.config.CommonConfigurations;
 import com.example.watchex.dto.DeviceDetailDto;
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.entity.Devices;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,6 +25,10 @@ public class DeviceService {
 
     public List<Devices> getAll() {
         return deviceRepository.findAll();
+    }
+
+    public List<DeviceDetailDto> getHot() {
+        return deviceRepository.getHot();
     }
 
     public void save(Devices devices) {
