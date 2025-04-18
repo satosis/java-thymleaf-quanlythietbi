@@ -87,7 +87,7 @@ public class BorrowRequestsController {
         borrowHistory.setBorrowDate(new Date());
         borrowHistory.setExpectedReturnDate(borrowRequest.getDueDate());
         borrowHistory.setDevices(devices);
-        borrowHistory.setUser(CommonUtils.getCurrentUser());
+        borrowHistory.setUser(borrowRequest.getUser());
         borrowHistoryService.save(borrowHistory);
 
         borrowRequest.setStatus("APPROVED");
