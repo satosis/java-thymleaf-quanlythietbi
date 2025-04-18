@@ -231,7 +231,7 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `provider` varchar(255) DEFAULT NULL,
-  `provider_id` varchar(12) DEFAULT NULL,
+  `provider_id` varchar(255) DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `student_id` varchar(255) DEFAULT NULL,
