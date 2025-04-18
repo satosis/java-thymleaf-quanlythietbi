@@ -55,7 +55,7 @@ public class BorrowRequestsController {
         if (params.get("status") != null && !Objects.equals(params.get("status"), "")) {
             dto.setStatus(params.get("status"));
         }
-        if (params.get("name") != null&& !Objects.equals(params.get("name"), "")) {
+        if (params.get("name") != null && !Objects.equals(params.get("name"), "")) {
             dto.setName(params.get("name"));
         }
 

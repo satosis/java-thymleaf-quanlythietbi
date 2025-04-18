@@ -5,6 +5,7 @@ import com.example.watchex.dto.TransactionRevenueDto;
 import com.example.watchex.entity.BorrowRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import com.example.watchex.entity.Devices;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface BorrowRequestService extends GenericService<BorrowRequest, Inte
 
     List<TransactionRevenueDto> getTotalIdsGroupedByCreatedAt(String status);
 
+    void deleteByDevice(Devices device);
 }

@@ -3,12 +3,13 @@ package com.example.watchex.repository;
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.dto.TransactionRevenueDto;
 import com.example.watchex.entity.BorrowRequest;
+import com.example.watchex.entity.Devices;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Repository
@@ -28,5 +29,8 @@ public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, In
             "(p.user.id = :#{#dto.getUser()} or :#{#dto.getUser()} is null ) and" +
             "(p.id = :#{#dto.getId()} or :#{#dto.getId()} is null ) ")
     Page<BorrowRequest> search(SearchDto dto, Pageable pageable);
+
+    @Query("delete from BorrowRequest p where p.devices = :devices")
+    void deleteByDevice(Devices devices);
 
 }

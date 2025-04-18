@@ -16,15 +16,17 @@ public class BorrowHistoryService {
     private BorrowHistoryRepository borrowHistoryRepository;
 
     public Page<BorrowHistory> get(SearchDto dto) {
-        return borrowHistoryRepository  .search(dto, PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
+        return borrowHistoryRepository.search(dto, PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
     }
 
     public void save(BorrowHistory borrowHistory) {
         borrowHistoryRepository.save(borrowHistory);
     }
+
     public BorrowHistory findByBorrowRequest(BorrowRequest borrowRequest) {
         return borrowHistoryRepository.findByBorrowRequest(borrowRequest);
     }
+
     public BorrowHistory findByDevices(Devices devices) {
         return borrowHistoryRepository.findByDevices(devices);
     }

@@ -43,4 +43,10 @@ public class BorrowRequestServiceImpl extends GenericServiceImpl<BorrowRequest, 
         Integer month = Calendar.getInstance().get(Calendar.MONTH)+1;
         return repository.getTotalIdsGroupedByCreatedAt(status, month);
     }
+
+    @Override
+    public void deleteByDevice(Devices device) {
+        void result = repository.deleteByDevice(id);
+        return result;
+    }
 }
