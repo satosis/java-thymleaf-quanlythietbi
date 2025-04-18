@@ -73,7 +73,7 @@ public class BorrowHistoryController {
         model.addAttribute("totalPages", borrowHistory.getTotalPages());
         model.addAttribute("totalItems", borrowHistory.getTotalElements());
         model.addAttribute("borrowHistories", borrowHistory);
-        model.addAttribute("models", "borrow");
+        model.addAttribute("models", "history");
         model.addAttribute("id", params.get("id"));
         model.addAttribute("users", users);
         model.addAttribute("title", "Quản lý lịch sử mượn");
