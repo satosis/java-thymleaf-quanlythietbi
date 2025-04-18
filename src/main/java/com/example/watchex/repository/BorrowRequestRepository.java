@@ -7,13 +7,16 @@ import com.example.watchex.entity.Devices;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, Integer> {
+
     @Query("select p from BorrowRequest p where p.status = :status")
     List<BorrowRequest> getByStatus(String status);
 
@@ -30,7 +33,9 @@ public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, In
             "(p.id = :#{#dto.getId()} or :#{#dto.getId()} is null ) ")
     Page<BorrowRequest> search(SearchDto dto, Pageable pageable);
 
-    @Query("delete from BorrowRequest p where p.devices = :devices")
-    void deleteByDevice(Devices devices);
-
+    // Nếu BorrowRequest có @ManyToOne Device
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM BorrowRequest b WHERE b.devices.id = :deviceId")
+    void deleteByDeviceId(Integer deviceId);
 }

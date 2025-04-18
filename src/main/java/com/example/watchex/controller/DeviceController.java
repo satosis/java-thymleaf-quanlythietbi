@@ -205,7 +205,7 @@ public class DeviceController {
                 devices.setOperational_status("BROKEN");
                 deviceService.save(devices);
             } else {
-                borrowRequestService.deleteByDevice(devices);
+                borrowRequestService.deleteByDevice(devices.getId());
                 ra.addFlashAttribute("message", messageSource.getMessage("delete_device_success", new Object[0], LocaleContextHolder.getLocale()));
                 deviceService.delete(id);
             }

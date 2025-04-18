@@ -3,6 +3,7 @@ package com.example.watchex.service.impl;
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.dto.TransactionRevenueDto;
 import com.example.watchex.entity.BorrowRequest;
+import com.example.watchex.entity.Devices;
 import com.example.watchex.repository.BorrowRequestRepository;
 import com.example.watchex.service.BorrowRequestService;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,7 @@ public class BorrowRequestServiceImpl extends GenericServiceImpl<BorrowRequest, 
     }
 
     @Override
-    public void deleteByDevice(Devices device) {
-        void result = repository.deleteByDevice(id);
-        return result;
+    public void deleteByDevice(Integer id) {
+        repository.deleteByDeviceId(id);
     }
 }

@@ -19,5 +19,5 @@ public interface BorrowRequestService extends GenericService<BorrowRequest, Inte
 
     List<TransactionRevenueDto> getTotalIdsGroupedByCreatedAt(String status);
 
-    void deleteByDevice(Devices device);
+    void deleteByDevice(Integer id);
 }
