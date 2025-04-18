@@ -1,5 +1,6 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.config.CommonConfigurations;
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.entity.*;
 import com.example.watchex.repository.BorrowHistoryRepository;
@@ -62,6 +63,9 @@ public class BorrowHistoryController {
 
         if (params.get("user") != null && !Objects.equals(params.get("user"), "")) {
             dto.setUser(Integer.parseInt(params.get("user")));
+        }
+        if (Objects.equals(CommonConfigurations.getCurrentUser().getRole(), "USER")) {
+            dto.setUser(CommonConfigurations.getCurrentUser().getId());
         }
         Page<BorrowHistory> borrowHistory = borrowHistoryService.get(dto);
         model.addAttribute("currentPage", page);

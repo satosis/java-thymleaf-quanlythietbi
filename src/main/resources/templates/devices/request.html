@@ -7,11 +7,11 @@
 
         <section class="content-header">
             <!-- Content Header (Page header) -->
-            <h1>Gửi yêu cầu mượn thiết bị</h1>
+            <h1>[[#{borrow}]]</h1>
             <ol class="breadcrumb">
-                <li><a th:href="@{''}"> Trang chủ</a></li>
-                <li><a th:href="@{'/contact'}">Thiết bị</a></li>
-                <li><a href="#" class="active">Gửi yêu cầu mượn</a></li>
+                <li><a th:href="@{''}"> [[#{home}]]</a></li>
+                <li><a th:href="@{'/contact'}">[[#{devices}]]</a></li>
+                <li><a href="#" class="active">[[#{submit}]]</a></li>
             </ol>
         </section>
         <!-- Main content -->
@@ -23,17 +23,17 @@
                         <div class="box box-warning">
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="name">Thiết bị</label>
+                                    <label for="name">[[#{devices}]]</label>
                                     <input type="text" class="form-control" name="email" id="name" disabled th:value="${devices.name}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="reason">Lý do</label>
+                                    <label for="reason">[[#{reason}]]</label>
                                     <textarea name="reason" id="reason" cols="5" rows="2" autocomplete="off" th:field="*{reason}" class="form-control"></textarea>
                                     <p th:if="${#fields.hasErrors('reason')}" class="text-danger"
                                     th:errors="*{reason}"></p>
                                 </div>
                                 <div class="form-group">
-                                    <label for="dueDate">Ngày dự kiến trả thiết bị</label>
+                                    <label for="dueDate">[[#{due_date}]]</label>
                                     <input type="date" name="dueDate" id="dueDate" th:field="*{dueDate}" th:min="${date}" required>
                                     <p th:if="${#fields.hasErrors('dueDate')}" class="text-danger"
                                        th:errors="*{dueDate}"></p>

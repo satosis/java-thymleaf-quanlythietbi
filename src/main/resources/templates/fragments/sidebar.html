@@ -3,21 +3,21 @@
     <section class="sidebar">
 
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">Thanh điều hướng</li>
+            <li class="header">[[#{sidebar}]]</li>
             <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/borrow}">
-                    <i class="fa fa-money"></i> <span>Yêu cầu mượn thiết bị</span>
+                    <i class="fa fa-money"></i> <span>[[#{borrow}]]</span>
                 </a>
             </li>
-            <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
+            <li>
                 <a th:href="@{/history}">
-                    <i class="fa fa-money"></i> <span>Lịch sử mượn thiết bị</span>
+                    <i class="fa fa-money"></i> <span>[[#{history_borrow}]]</span>
                 </a>
             </li>
             <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
                 <a th:href="@{/maintenance}">
                     <i class="fa fa-wrench"></i>
-                    <span>Bảo trì thiết bị</span>
+                    <span>[[#{maintenance}]]</span>
                 </a>
             </li>
             <li th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
@@ -40,7 +40,7 @@
             <li th:if="${@commonConfigurations?.currentUser?.role == 'USER'}">
                 <a th:href="@{'/user/edit/' + ${@commonConfigurations?.currentUser?.id}}">
                     <i class="fa fa-user"></i>
-                    <span>Thông tin cá nhân</span>
+                    <span>[[#{profile}]]</span>
                 </a>
             </li>
             <!-- <li>

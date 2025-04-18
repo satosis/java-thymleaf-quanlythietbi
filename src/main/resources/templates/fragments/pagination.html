@@ -1,6 +1,6 @@
 ﻿<nav th:if="${totalPages > 1}">
     <div class="col-sm-2">
-        Total Item: [[${totalItems}]]
+        [[#{total_item}]]: [[${totalItems}]]
     </div>
     <ul class="pagination">
         <li class="page-item disabled" th:if="${currentPage == 1}">

@@ -6,29 +6,29 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Lịch sử mượn thiết bị
+                [[#{history_borrow}]]
                 <div class="box-title">
                     <form class="form-inline" th:object="${searchDto}">
                         <input type="text" class="form-control" th:field="*{name}" name="name"
                             placeholder="Tên thiết bị ...">
-                        <select id="fs" class="form-control" th:field="*{user}">
-                            <option value="">Người mượn</option>
+                        <select id="fs" class="form-control" th:field="*{user}" th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">
+                            <option value="">[[#{user_borrow}]]</option>
                             <option th:each="user : ${users}" th:value="${user.id}">
                                 [[${user.name}]]
                             </option>
                         </select>
                         <select name="operational_status" th:field="*{status}" class="form-control">
-                            <option value="">Trạng thái thiết bị</option>
-                            <option value="GOOD">Tốt</option>
-                            <option value="MINOR_DAMAGE">Hư hỏng nhỏ</option>
-                            <option value="MAJOR_DAMAGE">Hư hỏng nặng</option>
+                            <option value="">[[#{device_status}]]</option>
+                            <option value="GOOD">[[#{good}]]</option>
+                            <option value="MINOR_DAMAGE">[[#{minor_damage}]]</option>
+                            <option value="MAJOR_DAMAGE">[[#{major_damage}]]</option>
                         </select>
-                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> [[#{search}]]</button>
                     </form>
                 </div>
             </h1>
             <ol class="breadcrumb">
-                <li><a th:href="@{'/borrow'}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li><a th:href="@{'/borrow'}"><i class="fa fa-dashboard"></i> [[#{home}]]</a></li>
                 <li class="active"> [[#{borrow}]]</li>
             </ol>
             <!-- <div th:if="${message}" class="alert alert-success text-center mt-3">[[${message}]]</div> -->
@@ -41,12 +41,12 @@
                     <thead>
                         <tr>
                             <td>#</td>
-                            <td>Người mượn</td>
+                            <td>[[#{user_borrow}]]</td>
                             <td>[[#{devices}]]</td>
                             <td>[[#{request_date}]]</td>
                             <td>[[#{due_date}]]</td>
-                            <td>Ngày trả thực tế</td>
-                            <td>Trạng thái thiết bị</td>
+                            <td>[[#{actual_date}]]</td>
+                            <td>[[#{device_status}]]</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,13 +62,13 @@
                             <td>[[${borrowHistory.actualReturnDate}]]</td>
 
                             <td th:if="${borrowHistory.statusDevice == 'GOOD'}">
-                                <span class="text-success">Tốt</span>
+                                <span class="text-success">[[#{good}]]</span>
                             </td>
                             <td th:if="${borrowHistory.statusDevice == 'MINOR_DAMAGE'}">
-                                <span class="text-danger">Hư hỏng nhỏ</span>
+                                <span class="text-danger">[[#{minor_damage}]]</span>
                             </td>
                             <td th:if="${borrowHistory.statusDevice == 'MAJOR_DAMAGE'}">
-                                <span class="text-danger">Hư hỏng nặng</span>
+                                <span class="text-danger">[[#{major_damage}]]</span>
                             </td>
                         </tr>
                     </tbody>

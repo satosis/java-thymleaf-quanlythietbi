@@ -12,7 +12,7 @@
                         <input type="text" class="form-control" th:field="*{name}" name="name"
                             placeholder="Tên thiết bị ...">
                         <select id="fs" class="form-control" th:field="*{category}">
-                            <option value="">Danh mục</option>
+                            <option value="">[[#{category}]]</option>
                             <option th:each="category : ${categories}" th:value="${category.id}">
                                 [[${category.name}]]
                             </option>
@@ -29,17 +29,17 @@
                             <option value="BORROWED">BORROWED</option>
                             <option value="UNDER_MAINTENANCE">UNDER_MAINTENANCE</option>
                         </select>
-                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> [[#{search}]]</button>
                         <small th:if="${@commonConfigurations?.currentUser?.role != 'USER'}"><a
-                                th:href="@{'/devices/create'}" class="btn btn-primary">Thêm mới</a></small>
+                                th:href="@{'/devices/create'}" class="btn btn-primary">[[#{create}]]</a></small>
                         <small th:if="${@commonConfigurations?.currentUser?.role != 'USER'}"><a
-                                th:href="@{'/devices/export'}" class="btn btn-primary">Xuất excel</a></small>
+                                th:href="@{'/devices/export'}" class="btn btn-primary">[[#{export}]] excel</a></small>
                     </form>
                 </div>
 
             </h1>
             <ol class="breadcrumb">
-                <li><a th:href="@{'/devices'}"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+                <li><a th:href="@{'/devices'}"><i class="fa fa-dashboard"></i> [[#{home}]]</a></li>
                 <li class="active"> [[#{devices}]]</li>
             </ol>
         </section>
