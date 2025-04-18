@@ -4,7 +4,8 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>A</b>LT</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Admini</b>strator </span>
+        <span class="logo-lg" th:if="${@commonConfigurations?.currentUser?.role != 'USER'}">Trang quản trị </span>
+        <span class="logo-lg" th:if="${@commonConfigurations?.currentUser?.role == 'USER'}">Trang thiết bị </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -31,7 +32,7 @@
 
                             <p>
                                 [[${@commonConfigurations.getCurrentUser.getName()}]]
-                                <small>Member since Nov. 2025</small>
+                                <small>Thành viên từ Nov. 2025</small>
                             </p>
                         </li>
 

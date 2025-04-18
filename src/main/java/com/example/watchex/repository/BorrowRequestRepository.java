@@ -21,8 +21,8 @@ public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, In
     List<BorrowRequest> getByStatus(String status);
 
     @Query(nativeQuery = true, value =
-            "select sum(cast(p.id as int)) as totalMoney, DATE(p.created_at) as day from borrow_requests p " +
-                    "where p.status = :status and MONTH(p.created_at) = :month group by day")
+            "select sum(p.id) as totalMoney, DATE(p.created_at) as day from borrow_requests p " +
+                    "where p.status = :status and MONTH(p.created_at) = :month group by day order by day")
     List<TransactionRevenueDto> getTotalIdsGroupedByCreatedAt(String status, Integer month);
 
     @Query("SELECT p FROM BorrowRequest p " +

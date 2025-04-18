@@ -29,8 +29,12 @@ import java.nio.file.StandardCopyOption;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.time.Year;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CommonUtils {
     private static final ContactService CONTACT_SERVICE = new ContactService();
@@ -495,20 +499,12 @@ public class CommonUtils {
         return request.getAttribute(name);
     }
 
-    public static ArrayList<String> getListDayAndMonth() {
-        ArrayList<String> days = new ArrayList<>();
-        Calendar cal = Calendar.getInstance();
-        Integer month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-        int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        int year = Year.now().getValue();
-        for (int i = 1; i < maxDay; i++) {
-            if (i < 10) {
-                days.add(year + "-" + month + "-0" + i);
-            } else {
-                days.add(year + "-" + month + "-" + i);
-            }
-        }
-        return days;
+    public static List<String> getFormattedDaysInCurrentMonth() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        YearMonth yearMonth = YearMonth.now();
+
+        return IntStream.rangeClosed(1, yearMonth.lengthOfMonth())
+                .mapToObj(day -> yearMonth.atDay(day).format(formatter))
+                .collect(Collectors.toList());
     }
 }

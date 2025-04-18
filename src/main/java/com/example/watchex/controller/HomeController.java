@@ -52,7 +52,7 @@ public class HomeController {
         Page<Devices> devices = deviceService.get(dto);
         int totalUser = userService.getActive().size();
         int totalDevices = deviceService.getActive().size();
-        ArrayList<String> listDay = CommonUtils.getListDayAndMonth();
+        List<String> listDay = CommonUtils.getFormattedDaysInCurrentMonth();
         List<DeviceDetailDto> hotDevices = deviceService.getHot();
 
         int borrowRequestProcess = borrowRequestService.getByStatus("PENDING").size();
@@ -95,14 +95,21 @@ public class HomeController {
         for (String day : listDay) {
             Integer total = 0;
             for (TransactionRevenueDto revenue : revenueTransactionMonthDefault) {
-                Object fea = revenue;
+                if (Objects.equals(String.valueOf(revenue.getDay()), day)) {
+                        total = revenue.getTotalMoney();
+                    break;
+                }
             }
             arrRevenueTransactionMonth.add(total);
             total = 0;
-
+            for (TransactionRevenueDto revenue : revenueTransactionMonth) {
+                if (Objects.equals(String.valueOf(revenue.getDay()), day)) {
+                    total = revenue.getTotalMoney();
+                    break;
+                }
+            }
             arrRevenueTransactionMonthDefault.add(total);
         }
-
 
         model.addAttribute("totalPages", devices.getTotalPages());
         model.addAttribute("listDay", gson.toJson(listDay));
