@@ -10,7 +10,7 @@
                 <small><a th:href="@{'/user/create'}" class="btn btn-primary">[[#{create}]]</a></small>
 
                 <div class="box-title"><br/>
-                    <form class="form-inline" th:object="${searchDto}">
+                    <form class="form-inline d-flex" th:object="${searchDto}">
                         <input type="text" class="form-control" th:field="*{name}" name="name"
                             placeholder="Tên người dùng ...">
                         <input type="text" class="form-control" th:field="*{email}" name="email"
