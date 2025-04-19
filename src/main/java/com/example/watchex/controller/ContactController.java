@@ -1,5 +1,6 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.config.CommonConfigurations;
 import com.example.watchex.dto.ContactDto;
 import com.example.watchex.entity.Contact;
 import com.example.watchex.service.ContactService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,18 @@ public class ContactController {
 
     @Autowired
     private ContactService contactService;
+
+
+    @ModelAttribute
+    public String beforeEveryRequest() {
+        String[] listStatus = {"BANNED", "SUSPENDED", "INACTIVE"};
+        if (Arrays.asList(listStatus).contains(CommonConfigurations.getCurrentUser().getStatus())) {
+            CommonUtils.setCookie("Authorization", "");
+            return "redirect:/";
+        }
+        return null;
+    }
+
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {

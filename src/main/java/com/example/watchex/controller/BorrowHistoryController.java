@@ -13,10 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequestMapping("/history")
@@ -36,6 +33,17 @@ public class BorrowHistoryController {
     private MaintenanceRecordsService maintenanceRecordsService;
     @Autowired
     private UserService userService;
+
+
+    @ModelAttribute
+    public String beforeEveryRequest() {
+        String[] listStatus = {"BANNED", "SUSPENDED", "INACTIVE"};
+        if (Arrays.asList(listStatus).contains(CommonConfigurations.getCurrentUser().getStatus())) {
+            CommonUtils.setCookie("Authorization", "");
+            return "redirect:/";
+        }
+        return null;
+    }
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {

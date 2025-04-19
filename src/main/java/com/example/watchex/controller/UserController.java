@@ -1,5 +1,6 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.config.CommonConfigurations;
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.dto.UserDto;
 import com.example.watchex.entity.User;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,6 +39,17 @@ public class UserController {
 
     @Autowired
     private ImageService imageService;
+
+    @ModelAttribute
+    public String beforeEveryRequest() {
+        String[] listStatus = {"BANNED", "SUSPENDED", "INACTIVE"};
+        if (Arrays.asList(listStatus).contains(CommonConfigurations.getCurrentUser().getStatus())) {
+            CommonUtils.setCookie("Authorization", "");
+            return "redirect:/";
+        }
+        return null;
+    }
+
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {
         if (!Objects.equals(CommonUtils.getCurrentUser().getRole(), "ADMIN")) {

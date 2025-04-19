@@ -1,5 +1,6 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.config.CommonConfigurations;
 import com.example.watchex.dto.DeviceDetailDto;
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.dto.TransactionRevenueDto;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,6 +38,17 @@ public class HomeController {
     private BorrowRequestService borrowRequestService;
     @Autowired
     private UserService userService;
+
+
+    @ModelAttribute
+    public String beforeEveryRequest() {
+        String[] listStatus = {"BANNED", "SUSPENDED", "INACTIVE"};
+        if (Arrays.asList(listStatus).contains(CommonConfigurations.getCurrentUser().getStatus())) {
+            CommonUtils.setCookie("Authorization", "");
+            return "redirect:/";
+        }
+        return null;
+    }
 
     @GetMapping("/")
     public String get(Model model, @RequestParam Map<String, String> params) {

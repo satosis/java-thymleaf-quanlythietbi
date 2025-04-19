@@ -1,5 +1,6 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.config.CommonConfigurations;
 import com.example.watchex.dto.CategoryDto;
 import com.example.watchex.entity.Category;
 import com.example.watchex.service.CategoryService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.Map;
 
 @Controller
@@ -25,6 +27,17 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+
+    @ModelAttribute
+    public String beforeEveryRequest() {
+        String[] listStatus = {"BANNED", "SUSPENDED", "INACTIVE"};
+        if (Arrays.asList(listStatus).contains(CommonConfigurations.getCurrentUser().getStatus())) {
+            CommonUtils.setCookie("Authorization", "");
+            return "redirect:/";
+        }
+        return null;
+    }
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {

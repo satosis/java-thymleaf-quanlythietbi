@@ -1,5 +1,6 @@
 package com.example.watchex.controller;
 
+import com.example.watchex.config.CommonConfigurations;
 import com.example.watchex.dto.SearchDto;
 import com.example.watchex.entity.Devices;
 import com.example.watchex.entity.MaintenanceRecords;
@@ -25,10 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequestMapping("/maintenance")
@@ -46,6 +44,18 @@ public class MaintenanceRecordsController {
     private BorrowHistoryService borrowHistoryService;
     @Autowired
     private UserService userService;
+
+
+    @ModelAttribute
+    public String beforeEveryRequest() {
+        String[] listStatus = {"BANNED", "SUSPENDED", "INACTIVE"};
+        if (Arrays.asList(listStatus).contains(CommonConfigurations.getCurrentUser().getStatus())) {
+            CommonUtils.setCookie("Authorization", "");
+            return "redirect:/";
+        }
+        return null;
+    }
+
 
     @GetMapping("")
     public String get(Model model, @RequestParam Map<String, String> params) {

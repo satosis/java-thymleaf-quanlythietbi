@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -87,23 +88,31 @@ public class AuthController {
             result.rejectValue("email", "error.email", "Tài khoản không tồn tại !");
             return "auth/login";
         }
+        boolean checkPassword = new BCryptPasswordEncoder().matches(loginDto.getPassword(), user.getPassword());
+        if (!checkPassword) {
+            result.rejectValue("email", "error.email", "Tài khoản hoặc mật khẩu không chính xác !");
+            return "auth/login";
+        }
+        if (result.hasErrors()) {
+            return "auth/login";
+        }
         user.setProvider("direct");
         userService.save(user);
         if (Objects.equals(user.getRole(), "USER") && Objects.equals(user.getStatus(), "INACTIVE")) {
-            String subject = "Xác nhận đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản";
-            String template = "email/user-register-template";
-            model.addAttribute("name", user.getName());
-            model.addAttribute("email", user.getEmail());
+            result.rejectValue("email", "error.email", "Tài khoản của bạn chưa được kích hoạt. Vui lòng truy cập lại email để kích hoạt tài khoản !");
+           String subject = "Xác thực tài khoản";
+           String template = "email/user-register-template";
+           model.addAttribute("name", user.getName());
+           model.addAttribute("email", user.getEmail());
 
-            emailService.sendEmail(user.getEmail(), subject, template, model);
-            ra.addFlashAttribute("message_success", "Xác thực tài khoản");
+           emailService.sendEmail(user.getEmail(), subject, template, model);
             return "auth/login";
         }
         if (Objects.equals(user.getStatus(), "SUSPENDED")) {
-            ra.addFlashAttribute("message", messageSource.getMessage("suspended_user_success", new Object[0], LocaleContextHolder.getLocale()));
+            result.rejectValue("email", "error.email", messageSource.getMessage("suspended_user_success", new Object[0], LocaleContextHolder.getLocale()));
             return "auth/login";
         } else if (Objects.equals(user.getStatus(), "BANNED")) {
-            ra.addFlashAttribute("message", messageSource.getMessage("banned_user_success", new Object[0], LocaleContextHolder.getLocale()));
+            result.rejectValue("email", "error.email", messageSource.getMessage("banned_user_success", new Object[0], LocaleContextHolder.getLocale()));
             return "auth/login";
         }
 

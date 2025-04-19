@@ -46,6 +46,17 @@ public class DeviceController {
     @Autowired
     private ImageService imageService;
 
+    @ModelAttribute
+    public String beforeEveryRequest() {
+        String[] listStatus = {"BANNED", "SUSPENDED", "INACTIVE"};
+        if (Arrays.asList(listStatus).contains(CommonConfigurations.getCurrentUser().getStatus())) {
+            CommonUtils.setCookie("Authorization", "");
+            return "redirect:/";
+        }
+        return null;
+    }
+
+
     @GetMapping("device")
     public String get(Model model, @RequestParam Map<String, String> params) {
         if (CommonUtils.getCurrentUser() == null) {
