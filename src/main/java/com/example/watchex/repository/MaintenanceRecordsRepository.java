@@ -22,7 +22,7 @@ public interface MaintenanceRecordsRepository extends JpaRepository<MaintenanceR
             "(p.maintenance_status = :#{#dto.getStatus()} or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '') and" +
             "(p.maintenanceUser.id = :#{#dto.getUser()} or :#{#dto.getUser()} is null ) and" +
             "(p.reportedUser.id = :#{#dto.getReporter()} or :#{#dto.getReporter()} is null ) and" +
-            "(p.id = :#{#dto.getId()} or :#{#dto.getId()} is null ) ")
+            "(p.id = :#{#dto.getId()} or :#{#dto.getId()} is null )  order by p.id desc")
     Page<MaintenanceRecords> search(SearchDto dto, Pageable pageable);
 
 }

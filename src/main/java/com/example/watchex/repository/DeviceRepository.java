@@ -17,12 +17,12 @@ public interface DeviceRepository extends JpaRepository<Devices, Integer> {
             "(p.operational_status = :#{#dto.getOperationalStatus()} or :#{#dto.getOperationalStatus()} is null or :#{#dto.getOperationalStatus()} = '' ) and" +
             "(p.name LIKE %:#{#dto.getName()}% or :#{#dto.getName()} is null or :#{#dto.getName()} = '' ) and" +
             "(p.id = :#{#dto.getId()} or :#{#dto.getId()} is null ) and" +
-            "(p.category.id = :#{#dto.getCategory()} or :#{#dto.getCategory()} is null )")
+            "(p.category.id = :#{#dto.getCategory()} or :#{#dto.getCategory()} is null ) order by p.id desc")
     Page<Devices> search(SearchDto dto, Pageable pageable);
 
 
     @Query("SELECT p FROM Devices p " +
-            "WHERE (p.availability_status LIKE %:#{#dto.getStatus()}% or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' )")
+            "WHERE (p.availability_status LIKE %:#{#dto.getStatus()}% or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' ) order by p.id desc")
     List<Devices> listSearch(SearchDto dto);
 
     @Query("SELECT p.id as id, p.avatar as avatar, p.name as name, count(rq.id) as pay FROM Devices p " +
@@ -33,12 +33,12 @@ public interface DeviceRepository extends JpaRepository<Devices, Integer> {
     List<DeviceDetailDto> getHot();
 
 
-    @Query("select p from Devices p where p.slug = :slug")
+    @Query("select p from Devices p where p.slug = :slug order by p.id desc")
     DeviceDetailDto findBySlug(String slug);
 
-    @Query("select p from Devices p where p.category.slug = :slug")
+    @Query("select p from Devices p where p.category.slug = :slug order by p.id desc")
     Page<Devices> findBySlugCategory(String slug, Pageable pageable);
 
-    @Query("select p from Devices p where p.operational_status = 'WORKING'")
+    @Query("select p from Devices p where p.operational_status = 'WORKING' order by p.id desc")
     List<Devices> getActive();
 }

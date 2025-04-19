@@ -15,7 +15,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT p FROM User p " +
             "WHERE (p.status LIKE %:#{#dto.getStatus()}% or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' )" +
-            "and p.status != 'DELETED'")
+            "and p.status != 'DELETED' order by p.id desc")
     Page<User> search(SearchDto dto, Pageable pageable);
 
     @Query("SELECT u FROM User u WHERE u.email = :email")
@@ -23,6 +23,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT count(u) FROM User u WHERE u.email = :email")
     int existsByEmail(String email);
 
-    @Query("select p from User p where p.status != 'DELETED'")
+    @Query("select p from User p where p.status != 'DELETED' order by p.id desc")
     List<User> getActive();
 }

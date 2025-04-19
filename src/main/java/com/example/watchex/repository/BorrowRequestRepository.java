@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, Integer> {
 
-    @Query("select p from BorrowRequest p where p.status = :status")
+    @Query("select p from BorrowRequest p where p.status = :status order by p.id desc")
     List<BorrowRequest> getByStatus(String status);
 
     @Query(nativeQuery = true, value =
@@ -30,7 +30,7 @@ public interface BorrowRequestRepository extends JpaRepository<BorrowRequest, In
             "WHERE (dv.name LIKE %:#{#dto.getName()}% or :#{#dto.getName()} is null or :#{#dto.getName()} = '') and " +
             "(p.status = :#{#dto.getStatus()} or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '') and" +
             "(p.user.id = :#{#dto.getUser()} or :#{#dto.getUser()} is null ) and" +
-            "(p.id = :#{#dto.getId()} or :#{#dto.getId()} is null ) ")
+            "(p.id = :#{#dto.getId()} or :#{#dto.getId()} is null )  order by p.id desc")
     Page<BorrowRequest> search(SearchDto dto, Pageable pageable);
 
     // Nếu BorrowRequest có @ManyToOne Device
