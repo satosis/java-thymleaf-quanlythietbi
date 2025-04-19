@@ -28,7 +28,6 @@
                         <select name="status" th:field="*{status}" class="form-control">
                             <option value="">Trạng thái</option>
                             <option value="ACTIVE">[[#{active}]]</option>
-                            <option value="SUSPENDED">[[#{suspended}]]</option>
                             <option value="BANNED">[[#{banned}]]</option>
                             <option value="INACTIVE">[[#{inactive}]]</option>
                         </select>
@@ -72,7 +71,6 @@
                             <td th:if="${user.role == 'STAFF'}">[[#{staff}]]</td>
                             <td th:if="${user.role == 'USER'}">[[#{user}]]</td>
                             <td th:if="${user.status == 'ACTIVE'}">[[#{active}]]</td>
-                            <td class="text-danger" th:if="${user.status == 'SUSPENDED'}">[[#{suspended}]]</td>
                             <td class="text-danger" th:if="${user.status == 'BANNED'}">[[#{banned}]]</td>
                             <td class="text-danger" th:if="${user.status == 'INACTIVE'}">[[#{inactive}]]</td>
                             <td>[[${user.phone}]]</td>

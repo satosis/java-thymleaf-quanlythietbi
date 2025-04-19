@@ -56,8 +56,7 @@
                 <div class="form-group" th:if="${@commonConfigurations?.currentUser?.role == 'ADMIN'}">
                     <label for="password">[[#{status}]]</label>
                     <select id="fs" class="form-control mb-3" th:field="*{status}">
-                        <option value="ACTIVE">[[#{active}]]</option>
-                        <option value="SUSPENDED">[[#{suspended}]]</option>
+                        <option value="ACTIVE">[[#{active}]]</option> 
                         <option value="BANNED">[[#{banned}]]</option>
                     </select>
                 </div>
