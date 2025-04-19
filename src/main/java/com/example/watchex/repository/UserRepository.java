@@ -14,7 +14,12 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT p FROM User p " +
-            "WHERE (p.status LIKE %:#{#dto.getStatus()}% or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' )" +
+            "WHERE (p.status LIKE %:#{#dto.getStatus()}% or :#{#dto.getStatus()} is null or :#{#dto.getStatus()} = '' ) and " +
+            "(p.name LIKE %:#{#dto.getName()}% or :#{#dto.getName()} is null or :#{#dto.getName()} = '' ) and " +
+            "(p.email LIKE %:#{#dto.getEmail()}% or :#{#dto.getEmail()} is null or :#{#dto.getEmail()} = '' ) and " +
+            "(p.student_id LIKE %:#{#dto.getStudent_id()}% or :#{#dto.getStudent_id()} is null or :#{#dto.getStudent_id()} = '' ) and " +
+            "(p.phone LIKE %:#{#dto.getPhone()}% or :#{#dto.getPhone()} is null or :#{#dto.getPhone()} = '' ) and " +
+            "(p.role LIKE %:#{#dto.getRole()}% or :#{#dto.getRole()} is null or :#{#dto.getRole()} = '' ) " +
             "and p.status != 'DELETED' order by p.id desc")
     Page<User> search(SearchDto dto, Pageable pageable);
 

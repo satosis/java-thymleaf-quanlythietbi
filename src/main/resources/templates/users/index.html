@@ -8,6 +8,34 @@
             <h1>
                 [[#{user}]]
                 <small><a th:href="@{'/user/create'}" class="btn btn-primary">[[#{create}]]</a></small>
+
+                <div class="box-title"><br/>
+                    <form class="form-inline" th:object="${searchDto}">
+                        <input type="text" class="form-control" th:field="*{name}" name="name"
+                            placeholder="Tên người dùng ...">
+                        <input type="text" class="form-control" th:field="*{email}" name="email"
+                            placeholder="Email người dùng ...">
+                        <input type="text" class="form-control" th:field="*{student_id}" name="student_id"
+                            placeholder="Mã sinh viên ...">
+                        <input type="text" class="form-control" th:field="*{phone}" name="phone"
+                            placeholder="Số điện thoại ...">
+                        <select name="status" th:field="*{role}" class="form-control">
+                            <option value="">Vai trò</option>
+                            <option value="ADMIN">[[#{admin}]]</option>
+                            <option value="STAFF">[[#{staff}]]</option>
+                            <option value="USER">[[#{user}]]</option>
+                        </select>
+                        <select name="status" th:field="*{status}" class="form-control">
+                            <option value="">Trạng thái</option>
+                            <option value="ACTIVE">[[#{active}]]</option>
+                            <option value="SUSPENDED">[[#{suspended}]]</option>
+                            <option value="BANNED">[[#{banned}]]</option>
+                        </select>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        <small><a
+                            th:href="@{'/user/export'}" class="btn btn-primary">[[#{export}]] excel</a></small>
+                    </form>
+                </div>
             </h1>
             <ol class="breadcrumb">
                 <li><a th:href="@{'/user'}"><i class="fa fa-dashboard"></i> [[#{home}]]</a></li>
@@ -33,7 +61,7 @@
                     </thead>
                     <tbody>
                     <tr th:if="${users.isEmpty()}">
-                        <th colspan="6">[[#{no_result_found}]]</th>
+                        <th colspan="8">[[#{no_result_found}]]</th>
                     </tr>
                     <tr th:each="user : ${users}">
                         <td>[[${((currentPage - 1) * 10) + userStat.index + 1}]]</td>

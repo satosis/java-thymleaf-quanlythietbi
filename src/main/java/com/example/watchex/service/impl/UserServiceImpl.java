@@ -8,14 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -26,17 +22,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer> implement
     private UserRepository repository;
 
     @Override
-    public Page<User> get(Map<String, String> params) {
-        SearchDto dto = new SearchDto();
-        if (params.get("page") != null) {
-            dto.setPageIndex(Integer.parseInt(params.get("page")) - 1);
-        }
-        if (params.get("pageSize") != null) {
-            dto.setPageSize(Integer.parseInt(params.get("pageSize")));
-        }
-       if (params.get("status") != null) {
-            dto.setStatus(params.get("status"));
-        }
+    public Page<User> get(SearchDto dto) {
         return repository.search(dto, PageRequest.of(dto.getPageIndex(), dto.getPageSize()));
     }
 
@@ -56,7 +42,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, Integer> implement
         Optional<User> result = Optional.ofNullable(repository.findByEmail(email));
         return result.orElse(null);
     }
-    
+
     public List<User> getActive() {
         return repository.getActive();
     }

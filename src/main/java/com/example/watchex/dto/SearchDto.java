@@ -20,7 +20,11 @@ public class SearchDto implements Serializable {
     private String status;
     private String operationalStatus;
     private String asc;
+    private String role;
     private String name;
+    private String email;
+    private String phone;
+    private String student_id;
     private Integer category;
     private Integer user;
     private Integer reporter;

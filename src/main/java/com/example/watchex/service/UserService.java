@@ -8,18 +8,17 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public interface UserService extends GenericService<User, Integer> {
-    Page<User> get(Map<String, String> params);
+    Page<User> get(SearchDto dto);
 
     User show(Integer id) throws UserPrincipalNotFoundException;
 
     boolean existsByEmail(String email);
 
     User findByEmail(String email) throws UsernameNotFoundException;
+
     List<User> getActive();
 
 }
