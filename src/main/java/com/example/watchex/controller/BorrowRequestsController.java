@@ -122,6 +122,7 @@ public class BorrowRequestsController {
         BorrowHistory borrowHistory = borrowHistoryService.findByBorrowRequest(borrowRequest);
         Devices devices = borrowRequest.getDevices();
         borrowRequest.setStatus("RETURNED");
+        borrowHistory.setActualReturnDate(new Date());
         if (borrowHistory != null) {
             if (Objects.equals(params.get("status"), "GOOD")) {
                 borrowHistory.setExpectedReturnDate(new Date());
