@@ -33,6 +33,9 @@ public class ContactController {
     @ModelAttribute
     public String beforeEveryRequest() {
         String[] listStatus = {"BANNED", "SUSPENDED", "INACTIVE"};
+        if (CommonUtils.getCurrentUser() == null) {
+            return "redirect:/auth/login";
+        }
         if (Arrays.asList(listStatus).contains(CommonConfigurations.getCurrentUser().getStatus())) {
             CommonUtils.setCookie("Authorization", "");
             return "redirect:/";
