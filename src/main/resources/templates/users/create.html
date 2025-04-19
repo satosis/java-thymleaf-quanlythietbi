@@ -21,21 +21,21 @@
         <div class="col-md-8">
           <div class="form-group">
           <label for="name">[[#{username}]]</label>
-          <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Họ và tên">
+          <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Họ và tên" required>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Email">
+          <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Email" required>
         </div>
         <div class="form-group has-feedback">
           <label for="phone">[[#{phone_number}]]</label>
-          <input type="text" th:field="*{phone}" class="form-control" id="phone" placeholder="Số điện thoại">
+          <input type="text" th:field="*{phone}" class="form-control" id="phone" placeholder="Số điện thoại" required>
           <span class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
         </div>
         <div class="form-group has-feedback">
           <label for="student_id">[[#{student_id}]]</label>
           <input type="text" th:field="*{studentId}" id="student_id" class="form-control" value="123456789"
-            placeholder="Mã sinh viên">
+            placeholder="Mã sinh viên" required>
           <span class="text-danger" th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></span>
         </div>
         <div class="form-group">
@@ -48,7 +48,7 @@
         </div>
         <div class="form-group">
           <label for="password">[[#{password}]]</label>
-          <input type="password" id="password" class="form-control" th:field="*{password}" placeholder="Mật khẩu">
+          <input type="password" id="password" class="form-control" th:field="*{password}" placeholder="Mật khẩu" required>
         </div>
         <button type="submit" class="btn btn-primary">[[#{submit}]]</button>
         <a th:href="@{'/user'}" class="btn btn-danger">[[#{back}]]</a>

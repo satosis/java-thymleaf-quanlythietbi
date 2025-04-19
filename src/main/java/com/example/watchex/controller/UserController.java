@@ -68,6 +68,12 @@ public class UserController {
             String filePath = imageService.saveImage(userDto.getAvatarFile());
             user.setAvatar(filePath);
         }
+        user.setRole(userDto.getRole());
+        user.setStatus(userDto.getStatus());
+        user.setName(userDto.getName());
+        user.setStudent_id(userDto.getStudentId());
+        user.setPhone(userDto.getPhone());
+        user.setPassword(userDto.getPassword());
         userService.save(user);
         ra.addFlashAttribute("message", messageSource.getMessage("create_user_success", new Object[0], LocaleContextHolder.getLocale()));
         return "redirect:/user";
@@ -103,10 +109,19 @@ public class UserController {
         if (!Objects.equals(CommonUtils.getCurrentUser().getRole(), "ADMIN")) {
             user.setRole(CommonUtils.getCurrentUser().getRole());
             user.setStatus(CommonUtils.getCurrentUser().getStatus());
+        } else {
+            user.setRole(userDto.getRole());
+            user.setStatus(userDto.getStatus());
         }
         if (userDto.getAvatarFile().getOriginalFilename() != null && !Objects.equals(userDto.getAvatarFile().getOriginalFilename(), "")) {
             String filePath = imageService.saveImage(userDto.getAvatarFile());
             user.setAvatar(filePath);
+        }
+        user.setName(userDto.getName());
+        user.setStudent_id(userDto.getStudentId());
+        user.setPhone(userDto.getPhone());
+        if (!userDto.getPassword().isEmpty()) {
+            user.setPassword(userDto.getPassword());
         }
         userService.save(user);
         ra.addFlashAttribute("message", messageSource.getMessage("update_user_success", new Object[0], LocaleContextHolder.getLocale()));
